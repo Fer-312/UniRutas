@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/MiTabHost"
+    android:padding="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/layoutPeso"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+
+
+
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/tab1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    >
+                    <!-- Encabezado -->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:text="Hola, Juan"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="#000"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:src="@drawable/ic_notifications"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginEnd="12dp" />
+
+                            <ImageView
+                                android:src="@drawable/ic_settings"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Sección: Rutas Favoritas -->
+                    <TextView
+                        android:layout_marginTop="24dp"
+                        android:text="⭐ Rutas Favoritas (Horarios)"
+                        android:textStyle="bold"
+                        android:textColor="#000"
+                        android:textSize="16sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                        android:layout_marginTop="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_card"
+                        android:padding="16dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:text="Ruta UNICAES ➡ San Salvador"
+                            android:textSize="15sp"
+                            android:textColor="#000"
+                            android:textStyle="bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:text="7:30 P.M"
+                            android:textColor="#555"
+                            android:layout_marginTop="4dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <!-- Sección: Rutas Inscritas -->
+                    <TextView
+                        android:layout_marginTop="24dp"
+                        android:text="📅 Rutas Inscritas"
+                        android:textStyle="bold"
+                        android:textColor="#000"
+                        android:textSize="16sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <!-- Ruta 1 -->
+                    <LinearLayout
+                        android:layout_marginTop="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_card"
+                        android:padding="16dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:text="Ruta San Salvador ➡ UNICAES"
+                            android:textSize="15sp"
+                            android:textColor="#000"
+                            android:textStyle="bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:orientation="horizontal"
+                            >
+
+                            <TextView
+                                android:text="Hoy · 6:45 AM"
+                                android:textColor="#555"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+
+                            <TextView
+                                android:text="Lleno"
+                                android:textColor="#FFFFFF"
+                                android:background="@drawable/bg_badge_red"
+                                android:paddingHorizontal="12dp"
+                                android:paddingVertical="4dp"
+                                android:textSize="12sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:backgroundTintMode="src_over"
+                                android:layout_marginStart="50dp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Ruta 2 -->
+                    <LinearLayout
+                        android:layout_marginTop="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_card"
+                        android:padding="16dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:text="Ruta San Salvador ➡ UNICAES"
+                            android:textSize="15sp"
+                            android:textColor="#000"
+                            android:textStyle="bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:text="Hoy · 8:25 AM"
+                                android:textColor="#555"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:text="Disponible"
+                                android:textColor="#FFFFFF"
+                                android:background="@drawable/bg_badge_green"
+                                android:paddingHorizontal="12dp"
+                                android:paddingVertical="4dp"
+                                android:textSize="12sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="50dp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Resumen -->
+                    <TextView
+                        android:layout_marginTop="24dp"
+                        android:text="Resumen"
+                        android:textStyle="bold"
+                        android:textColor="#000"
+                        android:textSize="16sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/bg_card"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total de Rutas Inscritas del mes:"
+                            android:textColor="#555" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="3"
+                            android:textColor="#000"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total gastado este mes:"
+                            android:textColor="#555" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="$9.0"
+                            android:textColor="#000"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+
+
+
+
+            <LinearLayout
+                android:id="@+id/tab2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/layoutControlesLongitud"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spinnerUnidadesLongitud"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/unidadesLongitud" />
+
+                    <EditText
+                        android:id="@+id/txtValorLongitud"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:importantForAutofill="no"
+                        android:inputType="numberDecimal"
+                        tools:ignore="LabelFor" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnConvertirLongitud"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txtconvertir" />
+
+                <TableLayout
+                    android:id="@+id/layoutTablaLongitud"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:stretchColumns="1">
+
+                    <TableRow>
+                        <TextView android:text="@string/txtmil_metros" />
+                        <TextView android:id="@+id/txtMilimetros" android:text="@string/guion" />
+                    </TableRow>
+
+                    <TableRow>
+                        <TextView android:text="@string/txtcent_metros" />
+                        <TextView android:id="@+id/txtCentimetros" android:text="@string/guion" />
+                    </TableRow>
+
+                    <TableRow>
+                        <TextView android:text="@string/txtmetros" />
+                        <TextView android:id="@+id/txtMetros" android:text="@string/guion" />
+                    </TableRow>
+
+                    <TableRow>
+                        <TextView android:text="@string/txtkil_metros" />
+                        <TextView android:id="@+id/txtKilometros" android:text="@string/guion" />
+                    </TableRow>
+                </TableLayout>
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/tab3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/layoutControlesLongitud"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spinnerUnidadesLongitud"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/unidadesLongitud" />
+
+                    <EditText
+                        android:id="@+id/txtValorLongitud"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:importantForAutofill="no"
+                        android:inputType="numberDecimal"
+                        tools:ignore="LabelFor" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnConvertirLongitud"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txtconvertir" />
+
+                <TableLayout
+                    android:id="@+id/layoutTablaLongitud"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:stretchColumns="1">
+
+                    <TableRow>
+                        <TextView android:text="@string/txtmil_metros" />
+                        <TextView android:id="@+id/txtMilimetros" android:text="@string/guion" />
+                    </TableRow>
+
+                    <TableRow>
+                        <TextView android:text="@string/txtcent_metros" />
+                        <TextView android:id="@+id/txtCentimetros" android:text="@string/guion" />
+                    </TableRow>
+
+                    <TableRow>
+                        <TextView android:text="@string/txtmetros" />
+                        <TextView android:id="@+id/txtMetros" android:text="@string/guion" />
+                    </TableRow>
+
+                    <TableRow>
+                        <TextView android:text="@string/txtkil_metros" />
+                        <TextView android:id="@+id/txtKilometros" android:text="@string/guion" />
+                    </TableRow>
+                </TableLayout>
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/tab4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/layoutControlesLongitud"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spinnerUnidadesLongitud"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/unidadesLongitud" />
+
+                    <EditText
+                        android:id="@+id/txtValorLongitud"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:importantForAutofill="no"
+                        android:inputType="numberDecimal"
+                        tools:ignore="LabelFor" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnConvertirLongitud"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txtconvertir" />
+
+                <TableLayout
+                    android:id="@+id/layoutTablaLongitud"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:stretchColumns="1">
+
+                    <TableRow>
+                        <TextView android:text="@string/txtmil_metros" />
+                        <TextView android:id="@+id/txtMilimetros" android:text="@string/guion" />
+                    </TableRow>
+
+                    <TableRow>
+                        <TextView android:text="@string/txtcent_metros" />
+                        <TextView android:id="@+id/txtCentimetros" android:text="@string/guion" />
+                    </TableRow>
+
+                    <TableRow>
+                        <TextView android:text="@string/txtmetros" />
+                        <TextView android:id="@+id/txtMetros" android:text="@string/guion" />
+                    </TableRow>
+
+                    <TableRow>
+                        <TextView android:text="@string/txtkil_metros" />
+                        <TextView android:id="@+id/txtKilometros" android:text="@string/guion" />
+                    </TableRow>
+                </TableLayout>
+
+
+            </LinearLayout>
+
+
+
+        </FrameLayout>
+
+
+
+        <TabWidget
+            android:id="@android:id/tabs"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#EEE" />
+    </RelativeLayout>
+
+
+</TabHost>
