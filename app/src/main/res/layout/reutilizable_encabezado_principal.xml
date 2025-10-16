@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Encabezado -->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    >
+        <TextView
+            android:id="@+id/tvEncabezado"
+            android:text="Hola, Juan"
+            android:textSize="20sp"
+            android:textStyle="bold"
+
+            android:textColor="#000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+
+            android:layout_alignParentEnd="true"
+            >
+
+            <ImageButton
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="12dp"
+                android:contentDescription="botón de notificación"
+                android:src="@drawable/ic_notifications"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <ImageButton
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="botón de configuración"
+                android:src="@drawable/ic_settings"
+                tools:ignore="TouchTargetSizeCheck" />
+        </LinearLayout>
+
+
+</RelativeLayout>
+
+
+
+
+
+
