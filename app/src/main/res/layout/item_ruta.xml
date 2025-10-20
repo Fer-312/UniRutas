@@ -6,6 +6,9 @@
     android:background="@drawable/bg_card"
     android:padding="16dp"
     android:orientation="vertical"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
     android:layout_marginTop="8dp">
 
     <RelativeLayout
@@ -56,9 +59,7 @@
 
         <TextView
             android:id="@+id/tvEstado"
-            android:text="Lleno"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/bg_badge_red"
+            android:text=">"
             android:paddingHorizontal="12dp"
             android:paddingVertical="4dp"
             android:textSize="12sp"
