@@ -136,7 +136,7 @@ public class RutaRepository {
 
     // ========== INSCRIPCIONES ==========
     public void getInscripcionesByEstudiante(int idEstudiante, final RepositoryCallback<List<Inscripcion>> callback) {
-        api.getInscripcionesByEstudiante(idEstudiante).enqueue(new Callback<List<Inscripcion>>() {
+        api.getInscripcionesByEstudiante("count", "eq." + idEstudiante).enqueue(new Callback<List<Inscripcion>>() {
             @Override
             public void onResponse(Call<List<Inscripcion>> call, Response<List<Inscripcion>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -266,7 +266,7 @@ public class RutaRepository {
     }
 
     public void getFavoritosByUsuario(int idUsuario, final RepositoryCallback<List<Favorito>> callback) {
-        api.getFavoritosByUsuario("eq." +idUsuario, "*,hora(*)").enqueue(new Callback<List<Favorito>>() {
+        api.getFavoritosByUsuario("eq." +idUsuario, "*,horario(*)").enqueue(new Callback<List<Favorito>>() {
             @Override
             public void onResponse(Call<List<Favorito>> call, Response<List<Favorito>> response) {
                 if (response.isSuccessful() && response.body() != null) {

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.time.LocalTime;
 
-public class Hora {
+public class Horario {
     @SerializedName("id_hora")
     private int idHora;
     @SerializedName("hora")

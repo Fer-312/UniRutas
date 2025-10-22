@@ -78,7 +78,10 @@ public interface SupabaseApi {
     Call<List<Inscripcion>> getInscripciones();
 
     @GET("inscripcion")
-    Call<List<Inscripcion>> getInscripcionesByEstudiante(@Query("id_estudiante") int idEstudiante);
+    Call<List<Inscripcion>> getInscripcionesByEstudiante(
+            @Query("select") String select,
+            @Query("id_estudiante") String idEstudiante
+    );
 
     @GET("inscripcion")
     Call<List<Inscripcion>> getInscripcionesByRuta(@Query("id_ruta") int idRuta);

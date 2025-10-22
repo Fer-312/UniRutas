@@ -75,7 +75,7 @@ public class main2 extends AppCompatActivity {
                     sb.append("• Origen: ").append(ruta.getMunicipioOrigen()).append("\n");
                     sb.append("• Destino: ").append(ruta.getMunicipioDestino()).append("\n");
                     sb.append("• Tarifa: $").append(ruta.getTarifa()).append("\n");
-                    sb.append("• Hora: ").append(ruta.getHoraSalida()).append("\n\n");
+                    sb.append("• Horario: ").append(ruta.getHoraSalida()).append("\n\n");
                 }
 
                 tvResult.setText(sb.toString());
@@ -109,7 +109,7 @@ public class main2 extends AppCompatActivity {
                     sb.append("Origen: ").append(ruta.getMunicipioOrigen()).append("\n");
                     sb.append("Destino: ").append(ruta.getMunicipioDestino()).append("\n");
                     sb.append("Tarifa: $").append(ruta.getTarifa()).append("\n");
-                    sb.append("Hora Salida: ").append(ruta.getHoraSalida()).append("\n");
+                    sb.append("Horario Salida: ").append(ruta.getHoraSalida()).append("\n");
                     sb.append("Capacidad: ").append(ruta.getCapacidadTotal()).append("\n");
                     sb.append("Fcreacion: ").append(ruta.getFechaCreacion()).append("\n");
                     sb.append("--------------------\n\n");

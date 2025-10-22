@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,8 +18,12 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import sv.edu.catolica.unirutas.R;
 import sv.edu.catolica.unirutas.data.model.Estudiante;
@@ -37,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout containerRutasFavoritas;
     private RutaRepository repository;
     private AuthRepository authRepository;
+
+    private TextView tvRutasto, tvGastado;
 
     private ProgressBar progressBar;
     private void showLoading(boolean show) {
@@ -80,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
 
                     Toast.makeText(MainActivity.this,String.valueOf(authRepository.getCurrentEstudianteID()),Toast.LENGTH_LONG).show();
                 }
+                tvGastado = findViewById(R.id.tvGastado);
+                tvRutasto = findViewById(R.id.tvTotalRutas);
                 agregarRutasFavoritas();
                 agregarRutasInscritas();
             }
@@ -122,31 +131,24 @@ public class MainActivity extends AppCompatActivity {
                         TextView tvHorario = itemView.findViewById(R.id.tvHorario);
                         TextView tvEstado = itemView.findViewById(R.id.tvEstado);
 
-                        tvRutaOrigen.setText("Ruta " + favorito.getRuta().getMunicipioOrigen());
-                        tvRutaDestino.setText(favorito.getRuta().getMunicipioDestino());
-                        tvHorario.setText(String.valueOf(favorito.getRuta().getHoraSalida()));
-                        //Configuraciones de interfaz como color etc
-                        tvEstado.setTextColor(getResources().getColor(R.color.white));
-                        tvEstado.setText(favorito.getRuta().getEstado().getNombre());
+                        tvEstado.setVisibility(View.GONE);
+                        tvRutaOrigen.setText("Rutas ");
+                        tvHorario.setVisibility(View.GONE);
+
+
+
+                    tvRutaDestino.setText(""+favorito.getHorario().getHora());
 
 
                         //este es el boton que abre la ruta
                         itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                onRutaCardClick(favorito.getRuta());
+                                //onRutaCardClick(favorito.getRuta());
                             }
                         });
+                        containerRutasFavoritas.addView(itemView);
 
-                        // Cambiar color según el estado
-                        if ("Lleno".equals(favorito.getRuta().getEstado().getNombre())) {
-                            tvEstado.setBackgroundResource(R.drawable.bg_badge_red);
-                            containerRutasInscritas.addView(itemView);
-
-                        } else if ("Disponible".equals(favorito.getRuta().getEstado().getNombre())) {
-                            tvEstado.setBackgroundResource(R.drawable.bg_badge_green);
-                            containerRutasInscritas.addView(itemView);
-                        }
 
 
                 }
@@ -161,27 +163,38 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    private int count=0;
+    private double gastado=0;
     private void agregarRutasInscritas() {
         repository.getInscripcionesConRuta(new RutaRepository.RepositoryCallback<List<Inscripcion>>() {
             @Override
             public void onSuccess(List<Inscripcion> data) {
-                for (Inscripcion inscripcion:data) {
-
-                }
-
-            }
-
-            @Override
-            public void onError(String error) {
-
-            }
-        });
-
-        repository.getInscripcionesConRuta(new RutaRepository.RepositoryCallback<List<Inscripcion>>() {
-            @Override
-            public void onSuccess(List<Inscripcion> data) {
                 for(Inscripcion inscripcion: data){
+
                     if(inscripcion.getIdEstudiante()==authRepository.getCurrentEstudianteID()){
+                        Calendar ahora = Calendar.getInstance();
+                        int mesActual = ahora.get(Calendar.MONTH);
+                        int anioActual = ahora.get(Calendar.YEAR);
+
+                        try {
+                            String fechaStr = inscripcion.getFechaAsistencia(); // "18/10/2025 05:28:11"
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+                            Date fecha = sdf.parse(fechaStr);
+
+                            Calendar cal = Calendar.getInstance();
+                            cal.setTime(fecha);
+
+                            int mes = cal.get(Calendar.MONTH);
+                            int anio = cal.get(Calendar.YEAR);
+
+                            if (mes == mesActual && anio == anioActual) {
+                                count++;
+                                gastado+=Double.parseDouble(inscripcion.getTarifaPagada().toString()) ;
+
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
 
                         View itemView = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_ruta, containerRutasInscritas, false);
                         TextView tvRutaOrigen = itemView.findViewById(R.id.tvRutaOrigen);
@@ -217,7 +230,8 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 }
-
+                tvGastado.setText(String.valueOf(gastado));
+                tvRutasto.setText(String.valueOf(count));
 
             }
 
@@ -246,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
 
         Toast.makeText(this,
                 "Card pulsada: " + ruta.getMunicipioOrigen() + " → " + ruta.getMunicipioDestino() +
-                        "\nHora: " + ruta.getHoraSalida() +
+                        "\nHorario: " + ruta.getHoraSalida() +
                         "\nEstado: " + ruta.getEstado().getNombre(),
                 Toast.LENGTH_LONG).show();
     }

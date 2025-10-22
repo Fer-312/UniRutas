@@ -9,16 +9,13 @@ public class Favorito {
     @SerializedName("id_usuario")
     private Integer idUsuario;
 
-    @SerializedName("id_ruta")
-    private Integer idRuta;
-    private Ruta ruta;
 
     @SerializedName("fecha_agregado")
     private String fechaAgregado;
 
     @SerializedName("id_hora")
-    private int idHora;
-    private Hora hora;
+    private String idHora;
+    private Horario horario;
 
     // Constructor
     public Favorito() {}
@@ -30,8 +27,7 @@ public class Favorito {
     public Integer getIdUsuario() { return idUsuario; }
     public void setIdUsuario(Integer idUsuario) { this.idUsuario = idUsuario; }
 
-    public Integer getIdRuta() { return idRuta; }
-    public void setIdRuta(Integer idRuta) { this.idRuta = idRuta; }
+
 
     public String getFechaAgregado() {         try {
         // Tomar solo la parte hasta los segundos (primeros 19 caracteres)
@@ -51,27 +47,19 @@ public class Favorito {
     } }
     public void setFechaAgregado(String fechaAgregado) { this.fechaAgregado = fechaAgregado; }
 
-    public Ruta getRuta() {
-        return ruta;
-    }
-
-    public void setRuta(Ruta ruta) {
-        this.ruta = ruta;
-    }
-
-    public int getIdHora() {
+    public String getIdHora() {
         return idHora;
     }
 
-    public void setIdHora(int idHora) {
+    public void setIdHorario(String idHora) {
         this.idHora = idHora;
     }
 
-    public Hora getHora() {
-        return hora;
+    public Horario getHorario() {
+        return horario;
     }
 
-    public void setHora(Hora hora) {
-        this.hora = hora;
+    public void setHora(Horario horario) {
+        this.horario = horario;
     }
 }

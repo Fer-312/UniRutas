@@ -79,6 +79,7 @@
                     android:textColor="#555" />
 
                 <TextView
+                    android:id="@+id/tvTotalRutas"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -103,6 +104,7 @@
                     android:textColor="#555" />
 
                 <TextView
+                    android:id="@+id/tvGastado"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="$9.0"
