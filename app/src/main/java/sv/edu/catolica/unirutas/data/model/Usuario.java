@@ -1,9 +1,11 @@
 package sv.edu.catolica.unirutas.data.model;
 
 import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Usuario {
+public class Usuario implements Serializable {
     @SerializedName("id_usuario")
     private int idUsuario;
 

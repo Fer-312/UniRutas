@@ -8,6 +8,7 @@
     android:paddingTop="20dp"
     android:paddingBottom="10dp"
     android:layout_width="match_parent"
+    tools:context=".ui.main.MainActivity"
     android:layout_height="match_parent">
 
     <RelativeLayout
@@ -40,6 +41,9 @@
                 />
             <include
                 layout="@layout/main_rutas"
+                />
+            <include
+                layout="@layout/main_verperfil"
                 />
         </FrameLayout>
         <TabWidget

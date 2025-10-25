@@ -1,10 +1,12 @@
 package sv.edu.catolica.unirutas.data.model;
 
 import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalTime;
 
-public class Ruta {
+public class Ruta implements Serializable {
     @SerializedName("id_ruta")
     private int idRuta;
 
@@ -94,9 +96,7 @@ public class Ruta {
     public Integer getIdMicrobus() { return idMicrobus; }
     public void setIdMicrobus(Integer idMicrobus) { this.idMicrobus = idMicrobus; }
 
-    public Estado getEstado() {
-        return estado;
-    }
+    public Estado getEstado() { return estado;}
 
     public void setEstado(Estado estado) {
         this.estado = estado;

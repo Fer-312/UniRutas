@@ -41,8 +41,11 @@ public interface SupabaseApi {
     @GET("ruta")
     Call<List<Ruta>> getRutasConEstado(@Query("select") String select);
 
-    @GET("ruta")
-    Call<List<Ruta>> getRutasActivas(@Query("id_estado") int idEstado);
+
+
+
+
+
 
     @POST("ruta")
     Call<Ruta> createRuta(@Body Ruta ruta);

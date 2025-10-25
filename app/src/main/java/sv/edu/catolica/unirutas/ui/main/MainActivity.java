@@ -3,14 +3,12 @@ package sv.edu.catolica.unirutas.ui.main;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.text.Layout;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +17,6 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -30,7 +27,6 @@ import sv.edu.catolica.unirutas.data.model.Estudiante;
 import sv.edu.catolica.unirutas.data.model.Favorito;
 import sv.edu.catolica.unirutas.data.model.Inscripcion;
 import sv.edu.catolica.unirutas.data.model.Ruta;
-import sv.edu.catolica.unirutas.data.model.Ruta1;
 import sv.edu.catolica.unirutas.data.model.Usuario;
 import sv.edu.catolica.unirutas.data.repository.AuthRepository;
 import sv.edu.catolica.unirutas.data.repository.RutaRepository;
@@ -39,9 +35,10 @@ import sv.edu.catolica.unirutas.ui.main.auth.LoginActivity;
 public class MainActivity extends AppCompatActivity {
 
     private LinearLayout containerRutasInscritas;
-    private LinearLayout containerRutasFavoritas;
+    private LinearLayout containerRutasFavoritas,sectionsContainer;
     private RutaRepository repository;
     private AuthRepository authRepository;
+    private List<Ruta> listRuta;
 
     private TextView tvRutasto, tvGastado;
 
@@ -69,12 +66,15 @@ public class MainActivity extends AppCompatActivity {
         Usuario usuarioActual = authRepository.getCurrentUser();
         if (usuarioActual != null) {
             TextView Encabezado = findViewById(R.id.tvEncabezado);
-            Encabezado.setText("Hola " + usuarioActual.getNombre());
+            Encabezado.setText("Hola, " + usuarioActual.getNombre());
 
         }
 
         containerRutasInscritas = findViewById(R.id.containerRutasInscritas);
         containerRutasFavoritas = findViewById(R.id.containerRutasFavoritas);
+        sectionsContainer = findViewById(R.id.sections_container);
+
+
 
         repository = new RutaRepository();
 
@@ -100,20 +100,28 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        Infoperfil();
+        RutasPorDestino();
+
         //Espacio para tabs
         Resources res = getResources();
 
         TabHost tabControl = (TabHost) findViewById(R.id.MiTabHost);
         tabControl.setup();
 
-        TabHost.TabSpec spec = tabControl.newTabSpec("PESO");
+        TabHost.TabSpec spec = tabControl.newTabSpec("Home");
         spec.setContent(R.id.tab1);
         spec.setIndicator("",res.getDrawable(R.drawable.ic_home));
         tabControl.addTab(spec);
 
-        spec = tabControl.newTabSpec("TEMP");
+        spec = tabControl.newTabSpec("Rutas");
         spec.setContent(R.id.tab2);
         spec.setIndicator("",res.getDrawable(R.drawable.ic_bus));
+        tabControl.addTab(spec);
+
+        spec = tabControl.newTabSpec("Perfil");
+        spec.setContent(R.id.tab3);
+        spec.setIndicator("",res.getDrawable(R.drawable.ic_user));
         tabControl.addTab(spec);
 
     }
@@ -164,6 +172,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
     private int count=0;
+    Calendar ahora = Calendar.getInstance();
+    int mesActual = ahora.get(Calendar.MONTH);
+    int anioActual = ahora.get(Calendar.YEAR);
     private double gastado=0;
     private void agregarRutasInscritas() {
         repository.getInscripcionesConRuta(new RutaRepository.RepositoryCallback<List<Inscripcion>>() {
@@ -172,9 +183,7 @@ public class MainActivity extends AppCompatActivity {
                 for(Inscripcion inscripcion: data){
 
                     if(inscripcion.getIdEstudiante()==authRepository.getCurrentEstudianteID()){
-                        Calendar ahora = Calendar.getInstance();
-                        int mesActual = ahora.get(Calendar.MONTH);
-                        int anioActual = ahora.get(Calendar.YEAR);
+
 
                         try {
                             String fechaStr = inscripcion.getFechaAsistencia(); // "18/10/2025 05:28:11"
@@ -219,12 +228,15 @@ public class MainActivity extends AppCompatActivity {
                         });
 
                         // Cambiar color según el estado
-                        if ("Lleno".equals(inscripcion.getRuta().getEstado().getNombre())) {
-                            tvEstado.setBackgroundResource(R.drawable.bg_badge_red);
-                            containerRutasInscritas.addView(itemView);
 
-                        } else if ("Disponible".equals(inscripcion.getRuta().getEstado().getNombre())) {
+                        if ("Disponible".equals(inscripcion.getRuta().getEstado().getNombre())) {
                             tvEstado.setBackgroundResource(R.drawable.bg_badge_green);
+                            containerRutasInscritas.addView(itemView);
+                        } else if ("Partió".equals(inscripcion.getRuta().getEstado().getNombre())) {
+                            tvEstado.setBackgroundResource(R.drawable.bg_badge_orange);
+                            containerRutasInscritas.addView(itemView);
+                        }else{
+                            tvEstado.setBackgroundResource(R.drawable.bg_badge_red);
                             containerRutasInscritas.addView(itemView);
                         }
 
@@ -246,6 +258,173 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void RutasPorDestino() {
+        //showLoading(true); // Reutiliza tu méodo de loading
+        //para rutas por origen
+        repository.getRutasConEstado(new RutaRepository.RepositoryCallback<List<Ruta>>() {
+            @Override
+            public void onSuccess(List<Ruta> data) {
+                listRuta = data;
+                //showLoading(false); // Reutiliza tu méodo de loading
+
+
+
+                String municipioAnterior="";
+                //Agregamos un contenedor con su titulo:
+                for (Ruta ruta : data) {
+                    if(!ruta.getMunicipioOrigen().equals("Unicaes")){
+                        View itemView = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_municipio, sectionsContainer, false);
+                        LinearLayout header = itemView.findViewById(R.id.headerSection);
+
+                        TextView tv_section_titulo = itemView.findViewById(R.id.tv_section_titulo);
+                        tv_section_titulo.setText(ruta.getMunicipioOrigen());
+
+
+                        LinearLayout containerRutasAgrupadas = itemView.findViewById(R.id.containerRutasAgrupadas);
+                        ImageView arrow = itemView.findViewById(R.id.iv_arrow);
+                        header.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (containerRutasAgrupadas.getVisibility() == View.VISIBLE) {
+                                    containerRutasAgrupadas.setVisibility(View.GONE);
+                                    arrow.setRotation(0);
+                                } else {
+                                    containerRutasAgrupadas.setVisibility(View.VISIBLE);
+                                    arrow.setRotation(180);
+                                }
+                            }
+                        });
+
+                        if (!ruta.getMunicipioOrigen().equals(municipioAnterior) ){
+                            sectionsContainer.addView(itemView);
+                            municipioAnterior=ruta.getMunicipioOrigen();
+
+
+                            for (Ruta ruta2 : data){
+                                if(ruta2.getMunicipioOrigen().equals(municipioAnterior)){
+                                    View itemView2 = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_ruta, containerRutasAgrupadas, false);
+                                    TextView tvRutaOrigen = itemView2.findViewById(R.id.tvRutaOrigen);
+                                    TextView tvRutaDestino = itemView2.findViewById(R.id.tvRutaDestino);
+                                    TextView tvHorario = itemView2.findViewById(R.id.tvHorario);
+                                    TextView tvEstado = itemView2.findViewById(R.id.tvEstado);
+                                    LinearLayout liMotorista = itemView2.findViewById(R.id.motorista_container);
+                                    liMotorista.setVisibility(View.VISIBLE);
+
+                                    TextView tvMotorista = itemView2.findViewById(R.id.tvMotoristaName);
+                                    tvMotorista.setText(ruta2.getMotorista().getUsuario().getNombre());
+                                    tvRutaOrigen.setText(ruta2.getMunicipioOrigen());
+                                    tvRutaDestino.setText(ruta2.getMunicipioDestino());
+                                    tvHorario.setText(""+ruta2.getHoraSalida());
+
+                                    tvEstado.setText(ruta2.getEstado().getNombre());
+                                    if ("Disponible".equals(ruta2.getEstado().getNombre())) {
+                                        tvEstado.setBackgroundResource(R.drawable.bg_badge_green);
+                                    } else if ("Partió".equals(ruta2.getEstado().getNombre())) {
+                                        tvEstado.setBackgroundResource(R.drawable.bg_badge_orange);
+                                    }else{
+                                        tvEstado.setBackgroundResource(R.drawable.bg_badge_red);
+                                    }
+                                    tvEstado.setTextColor(getResources().getColor(R.color.white));
+                                    containerRutasAgrupadas.addView(itemView2);
+                                }
+                            }
+                        }
+                    }
+                }
+                municipioAnterior="";
+
+                //aqui la segunda paprte que es ordenarlo por destino
+                for (Ruta ruta : data) {
+                    if(!ruta.getMunicipioDestino().equals("Unicaes")){
+                        View itemView = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_municipio, sectionsContainer, false);
+                        LinearLayout header = itemView.findViewById(R.id.headerSection);
+
+                        TextView tv_section_titulo = itemView.findViewById(R.id.tv_section_titulo);
+                        tv_section_titulo.setText(ruta.getMunicipioOrigen());
+
+
+                        LinearLayout containerRutasAgrupadas = itemView.findViewById(R.id.containerRutasAgrupadas);
+                        ImageView arrow = itemView.findViewById(R.id.iv_arrow);
+                        header.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (containerRutasAgrupadas.getVisibility() == View.VISIBLE) {
+                                    containerRutasAgrupadas.setVisibility(View.GONE);
+                                    arrow.setRotation(0);
+                                } else {
+                                    containerRutasAgrupadas.setVisibility(View.VISIBLE);
+                                    arrow.setRotation(180);
+                                }
+                            }
+                        });
+
+                        if (!ruta.getMunicipioDestino().equals(municipioAnterior) ){
+                            sectionsContainer.addView(itemView);
+                            municipioAnterior=ruta.getMunicipioDestino();
+
+
+                            for (Ruta ruta2 : data){
+                                if(ruta2.getMunicipioDestino().equals(municipioAnterior)){
+                                    View itemView2 = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_ruta, containerRutasAgrupadas, false);
+                                    TextView tvRutaOrigen = itemView2.findViewById(R.id.tvRutaOrigen);
+                                    TextView tvRutaDestino = itemView2.findViewById(R.id.tvRutaDestino);
+                                    TextView tvHorario = itemView2.findViewById(R.id.tvHorario);
+                                    TextView tvEstado = itemView2.findViewById(R.id.tvEstado);
+                                    LinearLayout liMotorista = itemView2.findViewById(R.id.motorista_container);
+                                    liMotorista.setVisibility(View.VISIBLE);
+
+                                    TextView tvMotorista = itemView2.findViewById(R.id.tvMotoristaName);
+                                    tvMotorista.setText(ruta2.getMotorista().getUsuario().getNombre());
+                                    tvRutaOrigen.setText(ruta2.getMunicipioOrigen());
+                                    tvRutaDestino.setText(ruta2.getMunicipioDestino());
+                                    tvHorario.setText(""+ruta2.getHoraSalida());
+
+                                    tvEstado.setText(ruta2.getEstado().getNombre());
+                                    if ("Disponible".equals(ruta2.getEstado().getNombre())) {
+                                        tvEstado.setBackgroundResource(R.drawable.bg_badge_green);
+                                    } else if ("Partió".equals(ruta2.getEstado().getNombre())) {
+                                        tvEstado.setBackgroundResource(R.drawable.bg_badge_orange);
+                                    }else{
+                                        tvEstado.setBackgroundResource(R.drawable.bg_badge_red);
+                                    }
+                                    municipioAnterior=ruta2.getMunicipioDestino();
+                                    tvEstado.setTextColor(getResources().getColor(R.color.white));
+                                    containerRutasAgrupadas.addView(itemView2);
+                                }
+
+
+
+                            }
+
+                        }
+                    }
+
+
+                }
+
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
+
+        //Para rutas por destino
+
+    }
+
+    private void Infoperfil(){
+        Usuario user = authRepository.getCurrentUser();
+        TextView tvNombre = findViewById(R.id.txtNombre);
+        TextView tvCorreo = findViewById(R.id.tvCorreo);
+        TextView tvTelefono = findViewById(R.id.tvTelefono);
+
+        tvNombre.setText(user.getNombre());
+        tvCorreo.setText(user.getCorreo());
+        tvTelefono.setText(user.getTelefono());
+
+    }
 
     public   void Logout(View v){
         authRepository.logout();
@@ -256,13 +435,9 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
     private void onRutaCardClick(Ruta ruta) {
-        // Aquí pones la lógica cuando se pulsa una card
-
-        Toast.makeText(this,
-                "Card pulsada: " + ruta.getMunicipioOrigen() + " → " + ruta.getMunicipioDestino() +
-                        "\nHorario: " + ruta.getHoraSalida() +
-                        "\nEstado: " + ruta.getEstado().getNombre(),
-                Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(MainActivity.this, detail_detalles_ruta.class);
+        intent.putExtra("ruta", ruta);
+        startActivity(intent);
     }
 
 

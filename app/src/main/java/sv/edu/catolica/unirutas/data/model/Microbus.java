@@ -2,7 +2,9 @@ package sv.edu.catolica.unirutas.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Microbus {
+import java.io.Serializable;
+
+public class Microbus implements Serializable {
     @SerializedName("id_microbus")
     private int idMicrobus;
 

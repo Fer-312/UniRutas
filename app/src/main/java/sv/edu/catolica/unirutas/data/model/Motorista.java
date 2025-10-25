@@ -1,14 +1,17 @@
 package sv.edu.catolica.unirutas.data.model;
 
 import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class Motorista {
+public class Motorista implements Serializable {
     @SerializedName("id_motorista")
     private int idMotorista;
 
     @SerializedName("id_usuario")
     private Integer idUsuario;
+    private Usuario usuario;
 
     @SerializedName("calificacion_promedio")
     private BigDecimal calificacionPromedio;
@@ -37,4 +40,12 @@ public class Motorista {
 
     public Integer getIdOrganizacion() { return idOrganizacion; }
     public void setIdOrganizacion(Integer idOrganizacion) { this.idOrganizacion = idOrganizacion; }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 }

@@ -24,6 +24,7 @@ public class AuthRepository {
     private static final String KEY_ESTUDENT_ID = "estudent_id";
     private static final String KEY_USER_EMAIL = "user_email";
     private static final String KEY_USER_NAME = "user_name";
+    private static final String KEY_USER_PHONE = "user_phone";
 
     public int estudiantexdId=0;
 
@@ -138,6 +139,7 @@ public class AuthRepository {
                 .remove(KEY_USER_EMAIL)
                 .remove(KEY_USER_NAME)
                 .remove(KEY_ESTUDENT_ID)
+                .remove(KEY_USER_PHONE)
                 .apply();
 
 
@@ -157,6 +159,7 @@ public class AuthRepository {
         usuario.setIdUsuario(prefs.getInt(KEY_USER_ID, 0));
         usuario.setCorreo(prefs.getString(KEY_USER_EMAIL, ""));
         usuario.setNombre(prefs.getString(KEY_USER_NAME, ""));
+        usuario.setTelefono(prefs.getString(KEY_USER_PHONE, ""));
 
         return usuario;
     }
@@ -176,6 +179,7 @@ public class AuthRepository {
     private void saveUserData(Usuario usuario) {
         prefs.edit()
                 .putInt(KEY_USER_ID, usuario.getIdUsuario())
+                .putString(KEY_USER_PHONE, usuario.getTelefono())
                 .putString(KEY_USER_EMAIL, usuario.getCorreo())
                 .putString(KEY_USER_NAME, usuario.getNombre() + " " + usuario.getApellido())
                 .apply();

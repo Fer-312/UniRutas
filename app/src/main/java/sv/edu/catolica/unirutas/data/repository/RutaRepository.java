@@ -42,7 +42,7 @@ public class RutaRepository {
     }
     //la ruta con el select
     public void getRutasConEstado(final RepositoryCallback<List<Ruta>> callback) {
-        api.getRutasConEstado("*,estado(*)").enqueue(new Callback<List<Ruta>>() {
+        api.getRutasConEstado("*,estado(*),motorista(*,usuario(*))").enqueue(new Callback<List<Ruta>>() {
             @Override
             public void onResponse(Call<List<Ruta>> call, Response<List<Ruta>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -154,7 +154,7 @@ public class RutaRepository {
     }
 
     public void getInscripcionesConRuta(final RepositoryCallback<List<Inscripcion>> callback) {
-        api.getInscripcionesConRuta("*,ruta(*,estado(*))").enqueue(new Callback<List<Inscripcion>>() {
+        api.getInscripcionesConRuta("*,ruta(*,estado(*),motorista(*,usuario(*)),microbus(*))").enqueue(new Callback<List<Inscripcion>>() {
             @Override
             public void onResponse(Call<List<Inscripcion>> call, Response<List<Inscripcion>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -170,6 +170,7 @@ public class RutaRepository {
             }
         });
     }
+
 
     public void createInscripcion(Inscripcion inscripcion, final RepositoryCallback<Inscripcion> callback) {
         api.createInscripcion(inscripcion).enqueue(new Callback<Inscripcion>() {

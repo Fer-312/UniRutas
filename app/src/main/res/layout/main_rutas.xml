@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="20dp"
-    android:background="@color/white"
+
     android:id="@+id/tab2">
 
     <!-- 🔍 Barra de búsqueda -->
@@ -34,168 +33,24 @@
             android:hint="Buscar rutas por municipio"
             android:inputType="text"
             android:minHeight="48dp"
+            android:paddingEnd="4dp"
             android:paddingStart="8dp"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            />
     </LinearLayout>
 
-    <!-- 📍 Lista de secciones -->
+    <!-- Lista de secciones -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never">
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:dividerPadding="8dp">
-
-            <!-- 🟩 Sección: San Salvador (Salidas) -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="12dp">
-
-                <!-- Encabezado -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="12dp"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/bg_section_header">
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/ic_location"
-                        app:tint="@color/black" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="San Salvador (Salidas)"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        android:paddingStart="8dp"
-                        android:textColor="@color/black" />
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@drawable/ic_arrow_down"
-                        app:tint="@color/black" />
-                </LinearLayout>
-
-                <!-- Rutas -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingTop="8dp">
-
-                    <!-- Card 1 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:background="@drawable/bg_card"
-                        android:padding="12dp"
-                        android:layout_marginBottom="8dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="UNICAES ➜ San Salvador"
-                                android:textSize="13sp"
-                                android:textStyle="bold" />
-
-                            <ImageView
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:contentDescription="felcha Click"
-                                android:src="@drawable/ic_arrow_right"
-                                app:tint="@color/black"
-                                tools:ignore="RedundantDescriptionCheck" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="08:30 AM"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:paddingTop="4dp"
-                            android:paddingBottom="2dp"
-                            android:textColor="@color/black" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Motorista  "
-                            android:textColor="#616161"
-                            android:textSize="13sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Juan Pérez"
-                            android:textSize="13sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/black" />
-                    </LinearLayout>
-
-                    <!-- Puedes duplicar estas tarjetas para más rutas -->
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- 🟨 Otra sección -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="12dp"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/bg_section_header">
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/ic_location"
-                        app:tint="@color/black" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Santa Ana (Entradas)"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        android:paddingStart="8dp"
-                        android:textColor="@color/black" />
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@drawable/ic_arrow_down"
-                        app:tint="@color/black" />
-                </LinearLayout>
-
-            </LinearLayout>
+            android:id="@+id/sections_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:dividerPadding="8dp">
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
