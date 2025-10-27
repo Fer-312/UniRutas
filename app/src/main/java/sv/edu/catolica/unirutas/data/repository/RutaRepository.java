@@ -42,7 +42,7 @@ public class RutaRepository {
     }
     //la ruta con el select
     public void getRutasConEstado(final RepositoryCallback<List<Ruta>> callback) {
-        api.getRutasConEstado("*,estado(*),motorista(*,usuario(*))").enqueue(new Callback<List<Ruta>>() {
+        api.getRutasConEstado("*,estado(*),motorista(*,usuario(*)),microbus(*)").enqueue(new Callback<List<Ruta>>() {
             @Override
             public void onResponse(Call<List<Ruta>> call, Response<List<Ruta>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -212,6 +212,24 @@ public class RutaRepository {
     // ========== COMENTARIOS ==========
     public void getComentariosByRuta(int idRuta, final RepositoryCallback<List<Comentario>> callback) {
         api.getComentariosByRuta(idRuta).enqueue(new Callback<List<Comentario>>() {
+            @Override
+            public void onResponse(Call<List<Comentario>> call, Response<List<Comentario>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onError("Error al obtener comentarios: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Comentario>> call, Throwable t) {
+                callback.onError("Error de conexión: " + t.getMessage());
+            }
+        });
+    }
+
+    public void getComentariosPorMotorista(int idMotorista, final RepositoryCallback<List<Comentario>> callback) {
+        api.getComentariosPorMotorista("*,estudiante(id_usuario,usuario(nombre,apellido)),ruta!inner(id_motorista))", "eq." + idMotorista).enqueue(new Callback<List<Comentario>>() {
             @Override
             public void onResponse(Call<List<Comentario>> call, Response<List<Comentario>> response) {
                 if (response.isSuccessful() && response.body() != null) {

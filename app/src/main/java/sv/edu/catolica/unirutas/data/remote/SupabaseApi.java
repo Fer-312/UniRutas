@@ -115,6 +115,17 @@ public interface SupabaseApi {
     @GET("comentario")
     Call<List<Comentario>> getComentariosByRuta(@Query("id_ruta") int idRuta);
 
+    //@GET("comentario")
+    //Call<List<Comentario>> getComentariosByMotorista(@Query("id_ruta") String select);
+
+    @GET("comentario")
+    Call<List<Comentario>> getComentariosPorMotorista(
+            @Query("select") String select,
+            @Query("ruta.id_motorista") String idMotorista
+    );
+
+
+
     @POST("comentario")
     Call<Comentario> createComentario(@Body Comentario comentario);
 

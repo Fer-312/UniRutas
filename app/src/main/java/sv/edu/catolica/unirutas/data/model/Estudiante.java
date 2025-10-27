@@ -8,6 +8,8 @@ public class Estudiante {
 
     @SerializedName("id_usuario")
     private int idUsuario;
+    private Usuario usuario;
+
 
     @SerializedName("carnet")
     private String carnet;
@@ -30,4 +32,12 @@ public class Estudiante {
 
     public String getUniversidad() { return universidad; }
     public void setUniversidad(String universidad) { this.universidad = universidad; }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 }

@@ -14,11 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.UniRutas">
         <activity
+            android:name=".ui.main.detail_detalles_motorista"
+            android:exported="false" />
+        <activity
             android:name=".ui.main.detail_detalles_ruta"
             android:exported="false" />
         <activity
             android:name=".ui.main.MainActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".ui.main.auth.LoginActivity"
             android:exported="true">

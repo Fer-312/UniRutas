@@ -12,13 +12,13 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <include
             layout="@layout/reutilizable_encabezado_detail"
             />
+
         <!-- Header Image Placeholder -->
         <ImageView
             android:layout_marginTop="10dp"
@@ -164,10 +164,15 @@
 
         <!-- Driver Information -->
         <LinearLayout
+            android:id="@+id/InfoMotorista"
+            android:onClick="infomotorista"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:orientation="horizontal"
             android:layout_marginTop="12dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
             android:gravity="center">
 
             <ImageView
@@ -215,26 +220,39 @@
                 android:textColor="#666666"
                 android:layout_marginTop="4dp" />
         </RelativeLayout>
-        <Button
-            android:layout_marginTop="15dp"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Inscribirse"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#6200EA"
-            android:layout_marginEnd="8dp"
-            app:cornerRadius="8dp" />
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_alignParentBottom="true"
+                android:paddingBottom="30dp">
+                <Button
+                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Inscribirse"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="#6200EA"
 
-        <Button
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Ver Mapa"
-            android:textColor="#6200EA"
-            android:backgroundTint="#E0E0E0"
-            app:cornerRadius="8dp" />
+                    android:layout_marginEnd="8dp"
+                    app:cornerRadius="8dp" />
+
+                <Button
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ver Mapa"
+                    android:textColor="#6200EA"
+                    android:backgroundTint="#E0E0E0"
+                    app:cornerRadius="8dp" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
 
 
 

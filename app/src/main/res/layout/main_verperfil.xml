@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp"
-    android:background="#F7F7F7"
     android:fillViewport="true"
     android:id="@+id/tab3"
     >
@@ -57,27 +56,55 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
+            android:layout_gravity="center"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="20dp"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tvTelefono"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Teléfono: 9999-9999"
-                android:textColor="#444444"
-                android:textSize="15sp"/>
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Teléfono: "
+                    android:textColor="#444444"
+                    android:textSize="15sp"/>
+                <TextView
+                    android:id="@+id/tvTelefono"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Teléfono: 9999-9999"
+                    android:textColor="#444444"
+                    android:textSize="15sp"/>
 
-            <TextView
-                android:id="@+id/tvCorreo"
-                android:layout_width="wrap_content"
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Email: asdasda@xd.com"
-                android:textColor="#444444"
-                android:textSize="15sp"
-                android:layout_marginTop="10dp"/>
+                android:orientation="horizontal"
+
+                android:layout_marginTop="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email: "
+                    android:textColor="#444444"
+
+                    android:textSize="15sp"/>
+                <TextView
+                    android:id="@+id/tvCorreo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="sdasda@xd.com"
+                    android:textColor="#444444"
+                    android:textSize="15sp"/>
+
+            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 
@@ -86,30 +113,31 @@
         android:id="@+id/btnEditarPerfil"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="#2A98F3"
         android:text="Editar Perfil"
         android:textAllCaps="false"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
-        android:backgroundTint="#2A98F3"
         android:textColor="#FFFFFF"
-        app:layout_constraintTop_toBottomOf="@id/cardDatos"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/cardDatos" />
 
     <Button
         android:id="@+id/btnHistorial"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginEnd="20dp"
         android:backgroundTint="#2A98F3"
         android:text="Historial"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnEditarPerfil" />
+        app:layout_constraintTop_toBottomOf="@id/btnEditarPerfil"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

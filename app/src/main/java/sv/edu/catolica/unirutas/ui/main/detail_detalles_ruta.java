@@ -1,6 +1,10 @@
 package sv.edu.catolica.unirutas.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -9,12 +13,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 import sv.edu.catolica.unirutas.R;
 import sv.edu.catolica.unirutas.data.model.Ruta;
@@ -29,12 +30,10 @@ public class detail_detalles_ruta extends AppCompatActivity {
     private TextView tvRutaOrigen;
     private TextView tvRutaDestino;
     private TextView tvPlaca;
+    private ImageButton btnregresar;
 
-    Calendar ahora = Calendar.getInstance();
-    int mesActual = ahora.get(Calendar.MONTH);
-    int anioActual = ahora.get(Calendar.YEAR);
-    int horaActual = ahora.get(Calendar.HOUR);
-    int minutoActual = ahora.get(Calendar.MINUTE);
+
+
 
 
     @Override
@@ -47,6 +46,13 @@ public class detail_detalles_ruta extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        initComponentes();
+        asignardetalles();
+
+    }
+
+    private void initComponentes(){
         rut = (Ruta) getIntent().getSerializableExtra("ruta");
         tvDEstado = findViewById(R.id.tvDEstado);
         tvTiempoRestante = findViewById(R.id.tvTiempoRestante);
@@ -56,10 +62,17 @@ public class detail_detalles_ruta extends AppCompatActivity {
         tvRutaOrigen = findViewById(R.id.tvRutaOrigen);
         tvRutaDestino = findViewById(R.id.tvRutaDestino);
         tvPlaca = findViewById(R.id.tvPlaca);
+        btnregresar = findViewById(R.id.btnregresar);
+        btnregresar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
-        asignardetalles();
 
     }
+
     private void asignardetalles(){
         tvDEstado.setText(rut.getEstado().getNombre());
         long horas=0;
@@ -68,11 +81,11 @@ public class detail_detalles_ruta extends AppCompatActivity {
             LocalTime horaSalida = rut.getHoraSalida(); // LocalTime
             LocalTime ahora = LocalTime.now();          // Hora actual
 
-// Extraer hora y minutos si los necesita como int
+            // Extraer hora y minutos si los necesita como int
             int hora = horaSalida.getHour();
             int minutos = horaSalida.getMinute();
 
-// Calcular tiempo restante en minutos
+            // Calcular tiempo restante en minutos
             long minutosRestantes = ChronoUnit.MINUTES.between(ahora, horaSalida);
              horas = minutosRestantes / 60;
              min = minutosRestantes % 60;
@@ -93,6 +106,13 @@ public class detail_detalles_ruta extends AppCompatActivity {
         tvRutaDestino.setText(rut.getMunicipioDestino());
         tvPlaca.setText(rut.getMicrobus().getPlacaVehiculo());
 
+
+    }
+
+    public void infomotorista(View view) {
+        Intent intent = new Intent(detail_detalles_ruta.this, detail_detalles_motorista.class);
+        intent.putExtra("motorista", rut.getMotorista());
+        startActivity(intent);
 
     }
 }

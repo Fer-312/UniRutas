@@ -1,7 +1,7 @@
 package sv.edu.catolica.unirutas.data.model;
 
 import com.google.gson.annotations.SerializedName;
-import java.sql.Timestamp;
+
 import java.math.BigDecimal;
 
 public class Comentario {
@@ -10,9 +10,11 @@ public class Comentario {
 
     @SerializedName("id_estudiante")
     private Integer idEstudiante;
+    private Estudiante estudiante;
 
     @SerializedName("id_ruta")
     private Integer idRuta;
+    private Ruta ruta;
 
     @SerializedName("contenido")
     private String contenido;
@@ -42,6 +44,38 @@ public class Comentario {
     public BigDecimal getPuntuacion() { return puntuacion; }
     public void setPuntuacion(BigDecimal puntuacion) { this.puntuacion = puntuacion; }
 
-    public String getFechaComentario() { return fechaComentario; }
+    public String getFechaComentario() {
+        try {
+            // Tomar solo la parte hasta los segundos (primeros 19 caracteres)
+            // 2025-10-18 05:28:11
+            if (fechaComentario.length() >= 19) {
+                String fechaFormateada = fechaComentario.substring(0, 19)
+                        .replace("T", " ")  // Reemplazar T por espacio
+                        .replaceFirst("(\\d{4})-(\\d{2})-(\\d{2})", "$3/$2/$1"); // yyyy-mm-dd a dd/mm/yyyy
+
+
+                return fechaFormateada;
+
+            }
+            return fechaComentario;
+        } catch (Exception e) {
+            return fechaComentario;
+        } }
     public void setFechaComentario(String fechaComentario) { this.fechaComentario = fechaComentario; }
+
+    public Ruta getRuta() {
+        return ruta;
+    }
+
+    public void setRuta(Ruta ruta) {
+        this.ruta = ruta;
+    }
+
+    public Estudiante getEstudiante() {
+        return estudiante;
+    }
+
+    public void setEstudiante(Estudiante estudiante) {
+        this.estudiante = estudiante;
+    }
 }

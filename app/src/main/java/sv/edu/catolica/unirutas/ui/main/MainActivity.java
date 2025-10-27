@@ -31,6 +31,7 @@ import sv.edu.catolica.unirutas.data.model.Usuario;
 import sv.edu.catolica.unirutas.data.repository.AuthRepository;
 import sv.edu.catolica.unirutas.data.repository.RutaRepository;
 import sv.edu.catolica.unirutas.ui.main.auth.LoginActivity;
+import sv.edu.catolica.unirutas.utils.ConversionesFecha;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private RutaRepository repository;
     private AuthRepository authRepository;
     private List<Ruta> listRuta;
+    private TextView Encabezado;
 
     private TextView tvRutasto, tvGastado;
 
@@ -65,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         // Mostrar datos del usuario
         Usuario usuarioActual = authRepository.getCurrentUser();
         if (usuarioActual != null) {
-            TextView Encabezado = findViewById(R.id.tvEncabezado);
+            Encabezado = findViewById(R.id.tvEncabezado);
             Encabezado.setText("Hola, " + usuarioActual.getNombre());
 
         }
@@ -95,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onError(String error) {
+                Toast.makeText(MainActivity.this,error,Toast.LENGTH_LONG).show();
 
             }
         });
@@ -123,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
         spec.setContent(R.id.tab3);
         spec.setIndicator("",res.getDrawable(R.drawable.ic_user));
         tabControl.addTab(spec);
+
 
     }
 
@@ -165,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onError(String error) {
-
+                Toast.makeText(MainActivity.this,error,Toast.LENGTH_LONG).show();
             }
         });
 
@@ -175,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
     Calendar ahora = Calendar.getInstance();
     int mesActual = ahora.get(Calendar.MONTH);
     int anioActual = ahora.get(Calendar.YEAR);
+    int diaActual = ahora.get(Calendar.DAY_OF_MONTH);
     private double gastado=0;
     private void agregarRutasInscritas() {
         repository.getInscripcionesConRuta(new RutaRepository.RepositoryCallback<List<Inscripcion>>() {
@@ -261,6 +266,7 @@ public class MainActivity extends AppCompatActivity {
     private void RutasPorDestino() {
         //showLoading(true); // Reutiliza tu méodo de loading
         //para rutas por origen
+
         repository.getRutasConEstado(new RutaRepository.RepositoryCallback<List<Ruta>>() {
             @Override
             public void onSuccess(List<Ruta> data) {
@@ -272,132 +278,160 @@ public class MainActivity extends AppCompatActivity {
                 String municipioAnterior="";
                 //Agregamos un contenedor con su titulo:
                 for (Ruta ruta : data) {
-                    if(!ruta.getMunicipioOrigen().equals("Unicaes")){
-                        View itemView = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_municipio, sectionsContainer, false);
-                        LinearLayout header = itemView.findViewById(R.id.headerSection);
+                    Calendar fecha = ConversionesFecha.convertirStringACalendar(ruta.getFechaCreacion());
+                    if(fecha.get(Calendar.YEAR)==anioActual && fecha.get(Calendar.MONTH)==mesActual && fecha.get(Calendar.DAY_OF_MONTH)==diaActual){
+                        if(!ruta.getMunicipioOrigen().equals("Unicaes")){
+                            View itemView = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_municipio, sectionsContainer, false);
+                            LinearLayout header = itemView.findViewById(R.id.headerSection);
 
-                        TextView tv_section_titulo = itemView.findViewById(R.id.tv_section_titulo);
-                        tv_section_titulo.setText(ruta.getMunicipioOrigen());
-
-
-                        LinearLayout containerRutasAgrupadas = itemView.findViewById(R.id.containerRutasAgrupadas);
-                        ImageView arrow = itemView.findViewById(R.id.iv_arrow);
-                        header.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (containerRutasAgrupadas.getVisibility() == View.VISIBLE) {
-                                    containerRutasAgrupadas.setVisibility(View.GONE);
-                                    arrow.setRotation(0);
-                                } else {
-                                    containerRutasAgrupadas.setVisibility(View.VISIBLE);
-                                    arrow.setRotation(180);
-                                }
-                            }
-                        });
-
-                        if (!ruta.getMunicipioOrigen().equals(municipioAnterior) ){
-                            sectionsContainer.addView(itemView);
-                            municipioAnterior=ruta.getMunicipioOrigen();
+                            TextView tv_section_titulo = itemView.findViewById(R.id.tv_section_titulo);
+                            tv_section_titulo.setText(ruta.getMunicipioOrigen()+" (Entrada)");
 
 
-                            for (Ruta ruta2 : data){
-                                if(ruta2.getMunicipioOrigen().equals(municipioAnterior)){
-                                    View itemView2 = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_ruta, containerRutasAgrupadas, false);
-                                    TextView tvRutaOrigen = itemView2.findViewById(R.id.tvRutaOrigen);
-                                    TextView tvRutaDestino = itemView2.findViewById(R.id.tvRutaDestino);
-                                    TextView tvHorario = itemView2.findViewById(R.id.tvHorario);
-                                    TextView tvEstado = itemView2.findViewById(R.id.tvEstado);
-                                    LinearLayout liMotorista = itemView2.findViewById(R.id.motorista_container);
-                                    liMotorista.setVisibility(View.VISIBLE);
-
-                                    TextView tvMotorista = itemView2.findViewById(R.id.tvMotoristaName);
-                                    tvMotorista.setText(ruta2.getMotorista().getUsuario().getNombre());
-                                    tvRutaOrigen.setText(ruta2.getMunicipioOrigen());
-                                    tvRutaDestino.setText(ruta2.getMunicipioDestino());
-                                    tvHorario.setText(""+ruta2.getHoraSalida());
-
-                                    tvEstado.setText(ruta2.getEstado().getNombre());
-                                    if ("Disponible".equals(ruta2.getEstado().getNombre())) {
-                                        tvEstado.setBackgroundResource(R.drawable.bg_badge_green);
-                                    } else if ("Partió".equals(ruta2.getEstado().getNombre())) {
-                                        tvEstado.setBackgroundResource(R.drawable.bg_badge_orange);
-                                    }else{
-                                        tvEstado.setBackgroundResource(R.drawable.bg_badge_red);
+                            LinearLayout containerRutasAgrupadas = itemView.findViewById(R.id.containerRutasAgrupadas);
+                            ImageView arrow = itemView.findViewById(R.id.iv_arrow);
+                            header.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (containerRutasAgrupadas.getVisibility() == View.VISIBLE) {
+                                        containerRutasAgrupadas.setVisibility(View.GONE);
+                                        arrow.setRotation(0);
+                                    } else {
+                                        containerRutasAgrupadas.setVisibility(View.VISIBLE);
+                                        arrow.setRotation(180);
                                     }
-                                    tvEstado.setTextColor(getResources().getColor(R.color.white));
-                                    containerRutasAgrupadas.addView(itemView2);
+                                }
+                            });
+
+                            if (!ruta.getMunicipioOrigen().equals(municipioAnterior) ){
+                                sectionsContainer.addView(itemView);
+                                municipioAnterior=ruta.getMunicipioOrigen();
+
+
+                                for (Ruta ruta2 : data){
+                                    Calendar fecha2 = ConversionesFecha.convertirStringACalendar(ruta2.getFechaCreacion());
+                                    if(fecha2.get(Calendar.YEAR)==anioActual && fecha2.get(Calendar.MONTH)==mesActual && fecha2.get(Calendar.DAY_OF_MONTH)==diaActual){
+                                        if(ruta2.getMunicipioOrigen().equals(municipioAnterior)){
+                                            View itemView2 = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_ruta, containerRutasAgrupadas, false);
+                                            TextView tvRutaOrigen = itemView2.findViewById(R.id.tvRutaOrigen);
+                                            TextView tvRutaDestino = itemView2.findViewById(R.id.tvRutaDestino);
+                                            TextView tvHorario = itemView2.findViewById(R.id.tvHorario);
+                                            TextView tvEstado = itemView2.findViewById(R.id.tvEstado);
+                                            LinearLayout liMotorista = itemView2.findViewById(R.id.motorista_container);
+                                            liMotorista.setVisibility(View.VISIBLE);
+
+                                            TextView tvMotorista = itemView2.findViewById(R.id.tvMotoristaName);
+                                            tvMotorista.setText(ruta2.getMotorista().getUsuario().getNombre());
+                                            tvRutaOrigen.setText(ruta2.getMunicipioOrigen());
+                                            tvRutaDestino.setText(ruta2.getMunicipioDestino());
+                                            tvHorario.setText(""+ruta2.getHoraSalida());
+
+                                            itemView2.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    onRutaCardClick(ruta2);
+                                                }
+                                            });
+
+                                            tvEstado.setText(ruta2.getEstado().getNombre());
+                                            if ("Disponible".equals(ruta2.getEstado().getNombre())) {
+                                                tvEstado.setBackgroundResource(R.drawable.bg_badge_green);
+                                            } else if ("Partió".equals(ruta2.getEstado().getNombre())) {
+                                                tvEstado.setBackgroundResource(R.drawable.bg_badge_orange);
+                                            }else{
+                                                tvEstado.setBackgroundResource(R.drawable.bg_badge_red);
+                                            }
+                                            tvEstado.setTextColor(getResources().getColor(R.color.white));
+                                            containerRutasAgrupadas.addView(itemView2);
+                                        }
+                                    }
+
                                 }
                             }
                         }
                     }
+
+
                 }
                 municipioAnterior="";
 
                 //aqui la segunda paprte que es ordenarlo por destino
                 for (Ruta ruta : data) {
-                    if(!ruta.getMunicipioDestino().equals("Unicaes")){
-                        View itemView = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_municipio, sectionsContainer, false);
-                        LinearLayout header = itemView.findViewById(R.id.headerSection);
+                    Calendar fecha = ConversionesFecha.convertirStringACalendar(ruta.getFechaCreacion());
+                    if(fecha.get(Calendar.YEAR)==anioActual && fecha.get(Calendar.MONTH)==mesActual && fecha.get(Calendar.DAY_OF_MONTH)==diaActual){
+                        if(!ruta.getMunicipioDestino().equals("Unicaes")){
+                            View itemView = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_municipio, sectionsContainer, false);
+                            LinearLayout header = itemView.findViewById(R.id.headerSection);
 
-                        TextView tv_section_titulo = itemView.findViewById(R.id.tv_section_titulo);
-                        tv_section_titulo.setText(ruta.getMunicipioOrigen());
-
-
-                        LinearLayout containerRutasAgrupadas = itemView.findViewById(R.id.containerRutasAgrupadas);
-                        ImageView arrow = itemView.findViewById(R.id.iv_arrow);
-                        header.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (containerRutasAgrupadas.getVisibility() == View.VISIBLE) {
-                                    containerRutasAgrupadas.setVisibility(View.GONE);
-                                    arrow.setRotation(0);
-                                } else {
-                                    containerRutasAgrupadas.setVisibility(View.VISIBLE);
-                                    arrow.setRotation(180);
-                                }
-                            }
-                        });
-
-                        if (!ruta.getMunicipioDestino().equals(municipioAnterior) ){
-                            sectionsContainer.addView(itemView);
-                            municipioAnterior=ruta.getMunicipioDestino();
+                            TextView tv_section_titulo = itemView.findViewById(R.id.tv_section_titulo);
+                            tv_section_titulo.setText(ruta.getMunicipioDestino()+" (Salida)");
 
 
-                            for (Ruta ruta2 : data){
-                                if(ruta2.getMunicipioDestino().equals(municipioAnterior)){
-                                    View itemView2 = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_ruta, containerRutasAgrupadas, false);
-                                    TextView tvRutaOrigen = itemView2.findViewById(R.id.tvRutaOrigen);
-                                    TextView tvRutaDestino = itemView2.findViewById(R.id.tvRutaDestino);
-                                    TextView tvHorario = itemView2.findViewById(R.id.tvHorario);
-                                    TextView tvEstado = itemView2.findViewById(R.id.tvEstado);
-                                    LinearLayout liMotorista = itemView2.findViewById(R.id.motorista_container);
-                                    liMotorista.setVisibility(View.VISIBLE);
-
-                                    TextView tvMotorista = itemView2.findViewById(R.id.tvMotoristaName);
-                                    tvMotorista.setText(ruta2.getMotorista().getUsuario().getNombre());
-                                    tvRutaOrigen.setText(ruta2.getMunicipioOrigen());
-                                    tvRutaDestino.setText(ruta2.getMunicipioDestino());
-                                    tvHorario.setText(""+ruta2.getHoraSalida());
-
-                                    tvEstado.setText(ruta2.getEstado().getNombre());
-                                    if ("Disponible".equals(ruta2.getEstado().getNombre())) {
-                                        tvEstado.setBackgroundResource(R.drawable.bg_badge_green);
-                                    } else if ("Partió".equals(ruta2.getEstado().getNombre())) {
-                                        tvEstado.setBackgroundResource(R.drawable.bg_badge_orange);
-                                    }else{
-                                        tvEstado.setBackgroundResource(R.drawable.bg_badge_red);
+                            LinearLayout containerRutasAgrupadas = itemView.findViewById(R.id.containerRutasAgrupadas);
+                            ImageView arrow = itemView.findViewById(R.id.iv_arrow);
+                            header.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (containerRutasAgrupadas.getVisibility() == View.VISIBLE) {
+                                        containerRutasAgrupadas.setVisibility(View.GONE);
+                                        arrow.setRotation(0);
+                                    } else {
+                                        containerRutasAgrupadas.setVisibility(View.VISIBLE);
+                                        arrow.setRotation(180);
                                     }
-                                    municipioAnterior=ruta2.getMunicipioDestino();
-                                    tvEstado.setTextColor(getResources().getColor(R.color.white));
-                                    containerRutasAgrupadas.addView(itemView2);
+                                }
+                            });
+
+                            if (!ruta.getMunicipioDestino().equals(municipioAnterior) ){
+                                sectionsContainer.addView(itemView);
+                                municipioAnterior=ruta.getMunicipioDestino();
+
+
+                                for (Ruta ruta2 : data){
+                                    Calendar fecha2 = ConversionesFecha.convertirStringACalendar(ruta2.getFechaCreacion());
+                                    if(fecha2.get(Calendar.YEAR)==anioActual && fecha2.get(Calendar.MONTH)==mesActual && fecha2.get(Calendar.DAY_OF_MONTH)==diaActual){
+                                        if(ruta2.getMunicipioDestino().equals(municipioAnterior)){
+                                            View itemView2 = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_ruta, containerRutasAgrupadas, false);
+                                            TextView tvRutaOrigen = itemView2.findViewById(R.id.tvRutaOrigen);
+                                            TextView tvRutaDestino = itemView2.findViewById(R.id.tvRutaDestino);
+                                            TextView tvHorario = itemView2.findViewById(R.id.tvHorario);
+                                            TextView tvEstado = itemView2.findViewById(R.id.tvEstado);
+                                            LinearLayout liMotorista = itemView2.findViewById(R.id.motorista_container);
+                                            liMotorista.setVisibility(View.VISIBLE);
+
+                                            TextView tvMotorista = itemView2.findViewById(R.id.tvMotoristaName);
+                                            tvMotorista.setText(ruta2.getMotorista().getUsuario().getNombre());
+                                            tvRutaOrigen.setText(ruta2.getMunicipioOrigen());
+                                            tvRutaDestino.setText(ruta2.getMunicipioDestino());
+                                            tvHorario.setText(""+ruta2.getHoraSalida());
+
+                                            itemView2.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    onRutaCardClick(ruta2);
+                                                }
+                                            });
+
+                                            tvEstado.setText(ruta2.getEstado().getNombre());
+                                            if ("Disponible".equals(ruta2.getEstado().getNombre())) {
+                                                tvEstado.setBackgroundResource(R.drawable.bg_badge_green);
+                                            } else if ("Partió".equals(ruta2.getEstado().getNombre())) {
+                                                tvEstado.setBackgroundResource(R.drawable.bg_badge_orange);
+                                            }else{
+                                                tvEstado.setBackgroundResource(R.drawable.bg_badge_red);
+                                            }
+
+                                            tvEstado.setTextColor(getResources().getColor(R.color.white));
+                                            containerRutasAgrupadas.addView(itemView2);
+                                        }
+                                    }
+
                                 }
 
-
-
                             }
-
                         }
                     }
+
 
 
                 }
@@ -406,7 +440,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onError(String error) {
-
+                Toast.makeText(MainActivity.this,error,Toast.LENGTH_LONG).show();
             }
         });
 
@@ -434,6 +468,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
     private void onRutaCardClick(Ruta ruta) {
         Intent intent = new Intent(MainActivity.this, detail_detalles_ruta.class);
         intent.putExtra("ruta", ruta);
