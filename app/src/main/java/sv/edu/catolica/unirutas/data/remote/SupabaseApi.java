@@ -41,6 +41,12 @@ public interface SupabaseApi {
     @GET("ruta")
     Call<List<Ruta>> getRutasConEstado(@Query("select") String select);
 
+    @GET("ruta")
+    Call<List<Ruta>> getRutasConEstadoyMotorista(
+            @Query("select") String select,
+            @Query("id_hora_llegada") String idHora
+    );
+
 
 
 
@@ -103,7 +109,17 @@ public interface SupabaseApi {
     Call<List<PuntoRuta>> getPuntosRuta();
 
     @GET("punto_ruta")
-    Call<List<PuntoRuta>> getPuntosByRuta(@Query("id_ruta") int idRuta);
+    Call<List<PuntoRuta>> getPuntosRutaDeMotoristas(
+            @Query("select") String select,
+            @Query("usuario.tipo_usuario.nombre") String filtro
+    );
+
+
+    @GET("punto_ruta")
+    Call<List<PuntoRuta>> getPuntosByRuta(
+            @Query("select") String select,
+            @Query("id_ruta") String idRuta
+        );
 
     @POST("punto_ruta")
     Call<PuntoRuta> createPuntoRuta(@Body PuntoRuta puntoRuta);
@@ -148,6 +164,11 @@ public interface SupabaseApi {
 
     @POST("notificacion")
     Call<Notificacion> createNotificacion(@Body Notificacion notificacion);
+    // ========== HORAIOS ==========
+    @GET("horario")
+    Call<List<Horario>> getHorarios();
+
+
 
     // ========== FAVORITOS ==========
     @GET("favorito")

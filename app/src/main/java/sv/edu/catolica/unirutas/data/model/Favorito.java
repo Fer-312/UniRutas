@@ -14,7 +14,7 @@ public class Favorito {
     private String fechaAgregado;
 
     @SerializedName("id_hora")
-    private String idHora;
+    private int idHora;
     private Horario horario;
 
     // Constructor
@@ -47,11 +47,11 @@ public class Favorito {
     } }
     public void setFechaAgregado(String fechaAgregado) { this.fechaAgregado = fechaAgregado; }
 
-    public String getIdHora() {
+    public int getIdHora() {
         return idHora;
     }
 
-    public void setIdHorario(String idHora) {
+    public void setIdHorario(int idHora) {
         this.idHora = idHora;
     }
 

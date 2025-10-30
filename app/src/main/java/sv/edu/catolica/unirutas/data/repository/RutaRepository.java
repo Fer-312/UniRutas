@@ -1,5 +1,9 @@
 package sv.edu.catolica.unirutas.data.repository;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
+
 import sv.edu.catolica.unirutas.data.remote.SupabaseApi;
 import sv.edu.catolica.unirutas.data.remote.SupabaseClient;
 import sv.edu.catolica.unirutas.data.remote.ApiResponse;
@@ -54,7 +58,26 @@ public class RutaRepository {
 
             @Override
             public void onFailure(Call<List<Ruta>> call, Throwable t) {
-                callback.onError("Error de conexión: " + t.getMessage());
+                callback.onError("por xdError de conexión: " + t.getMessage());
+            }
+        });
+
+    }
+
+    public void getRutasConEstadoyMotorista(int idHora,final RepositoryCallback<List<Ruta>> callback) {
+        api.getRutasConEstadoyMotorista("*,estado(*),motorista(*,usuario(*)),microbus(*)","eq."+idHora).enqueue(new Callback<List<Ruta>>() {
+            @Override
+            public void onResponse(Call<List<Ruta>> call, Response<List<Ruta>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onError("Error al obtener rutas: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Ruta>> call, Throwable t) {
+                callback.onError("por xdError de conexión: " + t.getMessage());
             }
         });
 
@@ -191,8 +214,55 @@ public class RutaRepository {
     }
 
     // ========== PUNTOS DE RUTA ==========
+    public void getPuntosRuta(final RepositoryCallback<List<PuntoRuta>> callback) {
+        api.getPuntosRuta().enqueue(new Callback<List<PuntoRuta>>() {
+            @Override
+            public void onResponse(Call<List<PuntoRuta>> call, Response<List<PuntoRuta>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onError("Error al obtener puntos de ruta: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PuntoRuta>> call, Throwable t) {
+                callback.onError("Error de conexión: " + t.getMessage());
+            }
+        });
+    }
+
+    public void getPuntosRutaDeMotoristas(final RepositoryCallback<List<PuntoRuta>> callback) {
+        api.getPuntosRutaDeMotoristas("*,usuario!inner(tipo_usuario!inner())","eq.Motorista").enqueue(new Callback<List<PuntoRuta>>() {
+            @Override
+            public void onResponse(Call<List<PuntoRuta>> call, Response<List<PuntoRuta>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+
+                    // 🔹 LOGS DE DEPURACIÓN 🔹
+                    Log.d("API_DEBUG", "Código HTTP: " + response.code());
+
+                    if (response.body() != null) {
+                        Log.d("API_DEBUG", "Respuesta JSON: " + new Gson().toJson(response.body()));
+                    } else {
+                        Log.d("API_DEBUG", "Respuesta vacía o nula");
+                    }
+
+                    callback.onSuccess(response.body());
+                } else {
+
+                    callback.onError("Error al obtener puntos de ruta: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PuntoRuta>> call, Throwable t) {
+                callback.onError("Error de conexión: " + t.getMessage());
+            }
+        });
+    }
+
     public void getPuntosByRuta(int idRuta, final RepositoryCallback<List<PuntoRuta>> callback) {
-        api.getPuntosByRuta(idRuta).enqueue(new Callback<List<PuntoRuta>>() {
+        api.getPuntosByRuta("*", "eq." + idRuta).enqueue(new Callback<List<PuntoRuta>>() {
             @Override
             public void onResponse(Call<List<PuntoRuta>> call, Response<List<PuntoRuta>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -264,6 +334,24 @@ public class RutaRepository {
         });
     }
 
+    // ========== HORARIO ===========
+    public void getHorarios(final RepositoryCallback<List<Horario>> callback) {
+        api.getHorarios().enqueue(new Callback<List<Horario>>() {
+            @Override
+            public void onResponse(Call<List<Horario>> call, Response<List<Horario>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onError("Error al obtener horarios: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Horario>> call, Throwable t) {
+                callback.onError("Error de conexión: " + t.getMessage());
+            }
+        });
+    }
 
     // ========== FAVORITOS ==========
     public void getFavoritos(final RepositoryCallback<List<Favorito>> callback) {

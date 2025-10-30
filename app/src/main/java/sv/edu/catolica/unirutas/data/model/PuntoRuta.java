@@ -1,17 +1,21 @@
 package sv.edu.catolica.unirutas.data.model;
 
 import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class PuntoRuta {
+public class PuntoRuta implements Serializable {
     @SerializedName("id_punto")
     private int idPunto;
 
     @SerializedName("id_ruta")
     private Integer idRuta;
+    private Ruta ruta;
 
     @SerializedName("id_usuario")
     private Integer idUsuario;
+    private Usuario usuario;
 
     @SerializedName("tipo_ruta")
     private Boolean tipoRuta;
@@ -25,8 +29,9 @@ public class PuntoRuta {
     @SerializedName("orden")
     private Integer orden;
 
-    // Constructor
-    public PuntoRuta() {}
+    @SerializedName("nombre")
+    private String Nombre;
+
 
     // Getters y Setters
     public int getIdPunto() { return idPunto; }
@@ -49,4 +54,12 @@ public class PuntoRuta {
 
     public Integer getOrden() { return orden; }
     public void setOrden(Integer orden) { this.orden = orden; }
+
+    public String getNombre() {
+        return Nombre;
+    }
+
+    public void setNombre(String nombre) {
+        Nombre = nombre;
+    }
 }

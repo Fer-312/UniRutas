@@ -11,13 +11,6 @@ public class Estado implements Serializable {
     @SerializedName("nombre")
     private String nombre;
 
-    // Constructor
-    public Estado() {}
-
-    public Estado(int idEstado, String nombre) {
-        this.idEstado = idEstado;
-        this.nombre = nombre;
-    }
 
     // Getters y Setters
     public int getIdEstado() { return idEstado; }

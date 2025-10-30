@@ -26,7 +26,7 @@ import sv.edu.catolica.unirutas.data.repository.RutaRepository;
 public class detail_detalles_motorista extends AppCompatActivity {
     private Motorista motorista;
     private TextView tvMotoristaName;
-    private TextView tvRate;
+    private TextView tvRate,ComentariosRecientes;
     private TextView tvDiasService;
     private TextView tvTelefono;
     private TextView tvEmail;
@@ -68,6 +68,7 @@ public class detail_detalles_motorista extends AppCompatActivity {
         repository = new RutaRepository();
         containerComentarios = findViewById(R.id.containerComentarios);
         btnVerMas = findViewById(R.id.btnVerMas);
+        ComentariosRecientes = findViewById(R.id.ComentariosRecientes);
 
     }
 
@@ -120,11 +121,14 @@ public class detail_detalles_motorista extends AppCompatActivity {
     public void CargarMás(View view) {
         containerComentarios.removeAllViews();
         if(btnVerMas.getText().toString().equals("Ver más")){
+
+            ComentariosRecientes.setText("Comentarios");
             for (Comentario comentario: coments) {
                 addComentarios(comentario);
             }
             btnVerMas.setText("Ver menos");
         }else{
+            ComentariosRecientes.setText("Comentarios Recientes");
             int count1=0;
             for (Comentario comentario: coments) {
                 if(count1<2){

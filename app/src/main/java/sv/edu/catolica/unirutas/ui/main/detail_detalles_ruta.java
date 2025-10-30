@@ -16,12 +16,15 @@ import androidx.core.view.WindowInsetsCompat;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
+import java.util.List;
 
 import sv.edu.catolica.unirutas.R;
+import sv.edu.catolica.unirutas.data.model.PuntoRuta;
 import sv.edu.catolica.unirutas.data.model.Ruta;
 
 public class detail_detalles_ruta extends AppCompatActivity {
     private Ruta rut;
+    private List<PuntoRuta> puntoRuta;
     private TextView tvDEstado;
     private TextView tvTiempoRestante;
     private TextView tvHoraSal;
@@ -29,8 +32,9 @@ public class detail_detalles_ruta extends AppCompatActivity {
     private TextView tvDriverNombre;
     private TextView tvRutaOrigen;
     private TextView tvRutaDestino;
-    private TextView tvPlaca;
+    private TextView tvPlaca, tvRutalabel;
     private ImageButton btnregresar;
+    private LinearLayout containerDestinos;
 
 
 
@@ -53,6 +57,7 @@ public class detail_detalles_ruta extends AppCompatActivity {
     }
 
     private void initComponentes(){
+        puntoRuta = (List<PuntoRuta>) getIntent().getSerializableExtra("puntoRuta");
         rut = (Ruta) getIntent().getSerializableExtra("ruta");
         tvDEstado = findViewById(R.id.tvDEstado);
         tvTiempoRestante = findViewById(R.id.tvTiempoRestante);
@@ -63,6 +68,8 @@ public class detail_detalles_ruta extends AppCompatActivity {
         tvRutaDestino = findViewById(R.id.tvRutaDestino);
         tvPlaca = findViewById(R.id.tvPlaca);
         btnregresar = findViewById(R.id.btnregresar);
+        tvRutalabel = findViewById(R.id.tvRutalabel);
+        containerDestinos = findViewById(R.id.containerDestinos);
         btnregresar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +82,14 @@ public class detail_detalles_ruta extends AppCompatActivity {
 
     private void asignardetalles(){
         tvDEstado.setText(rut.getEstado().getNombre());
+        if ("Disponible".equals(rut.getEstado().getNombre())) {
+            tvDEstado.setBackgroundResource(R.drawable.bg_badge_green);
+        } else if ("Partió".equals(rut.getEstado().getNombre())) {
+            tvDEstado.setBackgroundResource(R.drawable.bg_badge_orange);
+        }else{
+            tvDEstado.setBackgroundResource(R.drawable.bg_badge_red);
+        }
+
         long horas=0;
         long min=0;
         try {
@@ -105,6 +120,17 @@ public class detail_detalles_ruta extends AppCompatActivity {
         tvRutaOrigen.setText(rut.getMunicipioOrigen());
         tvRutaDestino.setText(rut.getMunicipioDestino());
         tvPlaca.setText(rut.getMicrobus().getPlacaVehiculo());
+        tvRutalabel.setText("Destinos: ");
+        for (PuntoRuta puntoruta: puntoRuta){
+            // Crear un nuevo TextView por cada punto
+            TextView tv = new TextView(this);
+            tv.setText(puntoruta.getNombre());
+            tv.setTextSize(13);
+
+            // Añadir al contenedor
+            containerDestinos.setVisibility(View.VISIBLE);
+            containerDestinos.addView(tv);
+        }
 
 
     }

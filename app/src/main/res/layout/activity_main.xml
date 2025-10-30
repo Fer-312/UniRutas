@@ -43,8 +43,12 @@
                 layout="@layout/main_rutas"
                 />
             <include
+                layout="@layout/main_favoritos"
+                />
+            <include
                 layout="@layout/main_verperfil"
                 />
+
         </FrameLayout>
         <TabWidget
             android:id="@android:id/tabs"

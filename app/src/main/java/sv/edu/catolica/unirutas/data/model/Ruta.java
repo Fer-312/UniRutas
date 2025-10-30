@@ -23,8 +23,10 @@ public class Ruta implements Serializable {
     @SerializedName("hora_salida")
     private String horaSalida;
 
-    @SerializedName("hora_llegada")
-    private String horaLlegada;
+    @SerializedName("id_hora_llegada")
+    private Integer idHorario;
+    private Horario horario;
+
 
     @SerializedName("tarifa")
     private BigDecimal tarifa;
@@ -43,8 +45,6 @@ public class Ruta implements Serializable {
     private Integer idMicrobus;
     private Microbus microbus;
 
-    // Constructor
-    public Ruta() {}
 
     // Getters y Setters
     public int getIdRuta() { return idRuta; }
@@ -62,8 +62,6 @@ public class Ruta implements Serializable {
     public LocalTime getHoraSalida() { return LocalTime.parse(horaSalida); }
     public void setHoraSalida(String horaSalida) { this.horaSalida = horaSalida; }
 
-    public LocalTime getHoraLlegada() { return LocalTime.parse(horaLlegada); }
-    public void setHoraLlegada(String horaLlegada) { this.horaLlegada = horaLlegada; }
 
     public BigDecimal getTarifa() { return tarifa; }
     public void setTarifa(BigDecimal tarifa) { this.tarifa = tarifa; }
@@ -124,5 +122,21 @@ public class Ruta implements Serializable {
 
     public void setMicrobus(Microbus microbus) {
         this.microbus = microbus;
+    }
+
+    public Horario getHorario() {
+        return horario;
+    }
+
+    public void setHorario(Horario horario) {
+        this.horario = horario;
+    }
+
+    public Integer getIdHorario() {
+        return idHorario;
+    }
+
+    public void setIdHorario(Integer idHorario) {
+        this.idHorario = idHorario;
     }
 }

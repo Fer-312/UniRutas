@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.UniRutas">
         <activity
+            android:name=".ui.main.detail_detalles_Horarios"
+            android:exported="false" />
+        <activity
             android:name=".ui.main.detail_detalles_motorista"
             android:exported="false" />
         <activity

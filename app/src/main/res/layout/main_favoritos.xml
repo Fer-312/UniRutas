@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:id="@+id/tab3">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <!-- Sección: Rutas Favoritas -->
+        <TextView
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="5dp"
+            android:text="⭐Mis Rutas Favoritas (Horarios)"
+            android:textStyle="bold"
+            android:textColor="#000"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- Contenedor para rutas favoritas dinámicas -->
+        <LinearLayout
+            android:id="@+id/containerRutasFavoritas2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <TextView
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="5dp"
+            android:text="Más Horarios: "
+            android:textStyle="bold"
+            android:textColor="#000"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- Contenedor para más horarios -->
+
+        <LinearLayout
+            android:id="@+id/containerHorariosF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        </LinearLayout>
+
+
+</ScrollView>

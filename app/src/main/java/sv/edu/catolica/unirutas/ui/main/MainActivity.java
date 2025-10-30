@@ -3,7 +3,6 @@ package sv.edu.catolica.unirutas.ui.main;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,16 +15,17 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.text.SimpleDateFormat;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import sv.edu.catolica.unirutas.R;
 import sv.edu.catolica.unirutas.data.model.Estudiante;
 import sv.edu.catolica.unirutas.data.model.Favorito;
+import sv.edu.catolica.unirutas.data.model.Horario;
 import sv.edu.catolica.unirutas.data.model.Inscripcion;
+import sv.edu.catolica.unirutas.data.model.PuntoRuta;
 import sv.edu.catolica.unirutas.data.model.Ruta;
 import sv.edu.catolica.unirutas.data.model.Usuario;
 import sv.edu.catolica.unirutas.data.repository.AuthRepository;
@@ -36,11 +36,15 @@ import sv.edu.catolica.unirutas.utils.ConversionesFecha;
 public class MainActivity extends AppCompatActivity {
 
     private LinearLayout containerRutasInscritas;
-    private LinearLayout containerRutasFavoritas,sectionsContainer;
+    private LinearLayout containerRutasFavoritas,sectionsContainer,containerRutasFavoritas2,containerHorariosF;
     private RutaRepository repository;
     private AuthRepository authRepository;
     private List<Ruta> listRuta;
+    private List<Favorito> listfavoritosUsuario;
     private TextView Encabezado;
+    private List<PuntoRuta> puntoRuta;
+    private List<PuntoRuta> puntoRutaFiltrada = new ArrayList<>();
+    private List<Integer> idFavoritos = new ArrayList<>();
 
     private TextView tvRutasto, tvGastado;
 
@@ -71,16 +75,19 @@ public class MainActivity extends AppCompatActivity {
             Encabezado.setText("Hola, " + usuarioActual.getNombre());
 
         }
-
         containerRutasInscritas = findViewById(R.id.containerRutasInscritas);
         containerRutasFavoritas = findViewById(R.id.containerRutasFavoritas);
         sectionsContainer = findViewById(R.id.sections_container);
+        containerRutasFavoritas2 = findViewById(R.id.containerRutasFavoritas2);
+        containerHorariosF = findViewById(R.id.containerHorariosF);
+
 
 
 
         repository = new RutaRepository();
 
         // Agregar rutas
+        CargarDestinos();
         repository.getEstudianteByIdUsuario(authRepository.getCurrentUser().getIdUsuario(), new RutaRepository.RepositoryCallback<List<Estudiante>>() {
             @Override
             public void onSuccess(List<Estudiante> data) {
@@ -91,8 +98,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 tvGastado = findViewById(R.id.tvGastado);
                 tvRutasto = findViewById(R.id.tvTotalRutas);
-                agregarRutasFavoritas();
-                agregarRutasInscritas();
+
+                Dashboard_AgregarRutasFavoritas();
+
             }
 
             @Override
@@ -103,8 +111,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
         Infoperfil();
-        RutasPorDestino();
+
 
         //Espacio para tabs
         Resources res = getResources();
@@ -122,21 +131,91 @@ public class MainActivity extends AppCompatActivity {
         spec.setIndicator("",res.getDrawable(R.drawable.ic_bus));
         tabControl.addTab(spec);
 
-        spec = tabControl.newTabSpec("Perfil");
+        spec = tabControl.newTabSpec("Favoritos");
         spec.setContent(R.id.tab3);
+        spec.setIndicator("",res.getDrawable(R.drawable.ic_star));
+        tabControl.addTab(spec);
+
+        spec = tabControl.newTabSpec("Perfil");
+        spec.setContent(R.id.tab4);
         spec.setIndicator("",res.getDrawable(R.drawable.ic_user));
         tabControl.addTab(spec);
 
 
     }
 
+    private void agregarPestañaFavoritos(){
+        for(Favorito favorito: listfavoritosUsuario) {
+            View itemView = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_ruta, containerRutasFavoritas2, false);
+            TextView tvRutaOrigen = itemView.findViewById(R.id.tvRutaOrigen);
+            TextView tvRutaDestino = itemView.findViewById(R.id.tvRutaDestino);
+            TextView tvHorario = itemView.findViewById(R.id.tvHorario);
+            TextView tvEstado = itemView.findViewById(R.id.tvEstado);
+            tvEstado.setVisibility(View.GONE);
+            tvRutaOrigen.setText("Rutas de hora clase ");
+            tvHorario.setVisibility(View.GONE);
+            tvRutaDestino.setText(""+favorito.getHorario().getHora());
 
-    private void agregarRutasFavoritas() {
+            //este es el boton que abre la ruta
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onFavoritoCardClick(favorito.getIdHora(),favorito.getHorario().getHora().toString());
+                }
+            });
+            containerRutasFavoritas2.addView(itemView);
+        }
+        repository.getHorarios(new RutaRepository.RepositoryCallback<List<Horario>>() {
+            @Override
+            public void onSuccess(List<Horario> data) {
+                for (Horario hora : data) {
+                    View itemView = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_ruta, containerHorariosF, false);
+                    TextView tvRutaOrigen = itemView.findViewById(R.id.tvRutaOrigen);
+                    TextView tvRutaDestino = itemView.findViewById(R.id.tvRutaDestino);
+                    TextView tvHorario = itemView.findViewById(R.id.tvHorario);
+                    TextView tvEstado = itemView.findViewById(R.id.tvEstado);
+                    tvEstado.setVisibility(View.GONE);
+                    tvRutaOrigen.setText("Rutas de hora clase ");
+                    tvHorario.setVisibility(View.GONE);
+                    tvRutaDestino.setText(""+hora.getHora());
+
+                    //este es el boton que abre la ruta
+                    itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onFavoritoCardClick(hora.getIdHora(),hora.getHora().toString());
+                        }
+                    });
+                    int count3=0;
+                    for (int i = 0; i < idFavoritos.size(); i++) {
+                        if(hora.getIdHora()==idFavoritos.get(i)){
+                            count3++;
+                        }
+                    }
+                    if(count3==0){
+                        containerHorariosF.addView(itemView);
+                    }
+
+
+
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
+
+    }
+    private void Dashboard_AgregarRutasFavoritas() {
         repository.getFavoritosByUsuario(authRepository.getCurrentUser().getIdUsuario(),new RutaRepository.RepositoryCallback<List<Favorito>>() {
             @Override
             public void onSuccess(List<Favorito> data) {
+                listfavoritosUsuario = data;
+                agregarPestañaFavoritos();
                 for(Favorito favorito: data){
-
+                    idFavoritos.add(favorito.getIdFavorito());
                         View itemView = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_ruta, containerRutasFavoritas, false);
                         TextView tvRutaOrigen = itemView.findViewById(R.id.tvRutaOrigen);
                         TextView tvRutaDestino = itemView.findViewById(R.id.tvRutaDestino);
@@ -144,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
                         TextView tvEstado = itemView.findViewById(R.id.tvEstado);
 
                         tvEstado.setVisibility(View.GONE);
-                        tvRutaOrigen.setText("Rutas ");
+                        tvRutaOrigen.setText("Rutas de hora clase ");
                         tvHorario.setVisibility(View.GONE);
 
 
@@ -156,9 +235,10 @@ public class MainActivity extends AppCompatActivity {
                         itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                //onRutaCardClick(favorito.getRuta());
+                                onFavoritoCardClick(favorito.getIdHora(),favorito.getHorario().getHora().toString());
                             }
                         });
+
                         containerRutasFavoritas.addView(itemView);
 
 
@@ -172,78 +252,75 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this,error,Toast.LENGTH_LONG).show();
             }
         });
-
-
     }
+
     private int count=0;
-    Calendar ahora = Calendar.getInstance();
+    Calendar ahora = Calendar.getInstance();;
     int mesActual = ahora.get(Calendar.MONTH);
     int anioActual = ahora.get(Calendar.YEAR);
     int diaActual = ahora.get(Calendar.DAY_OF_MONTH);
     private double gastado=0;
+
     private void agregarRutasInscritas() {
         repository.getInscripcionesConRuta(new RutaRepository.RepositoryCallback<List<Inscripcion>>() {
             @Override
             public void onSuccess(List<Inscripcion> data) {
                 for(Inscripcion inscripcion: data){
-
-                    if(inscripcion.getIdEstudiante()==authRepository.getCurrentEstudianteID()){
-
-
+                    Calendar cal1 = ConversionesFecha.convertirStringACalendar(inscripcion.getRuta().getFechaCreacion());
+                    if(inscripcion.getIdEstudiante()==authRepository.getCurrentEstudianteID() ){
                         try {
-                            String fechaStr = inscripcion.getFechaAsistencia(); // "18/10/2025 05:28:11"
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
-                            Date fecha = sdf.parse(fechaStr);
+                            if(inscripcion.getFechaAsistencia()!=null){
+                                Calendar cal = ConversionesFecha.convertirStringACalendar(inscripcion.getFechaAsistencia());
+                                int mes = cal.get(Calendar.MONTH);
+                                int anio = cal.get(Calendar.YEAR);
+                                if (mes == mesActual && anio == anioActual) {
+                                    count++;
+                                    gastado+=Double.parseDouble(inscripcion.getTarifaPagada().toString()) ;
 
-                            Calendar cal = Calendar.getInstance();
-                            cal.setTime(fecha);
-
-                            int mes = cal.get(Calendar.MONTH);
-                            int anio = cal.get(Calendar.YEAR);
-
-                            if (mes == mesActual && anio == anioActual) {
-                                count++;
-                                gastado+=Double.parseDouble(inscripcion.getTarifaPagada().toString()) ;
-
+                                }
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                        if(cal1.get(Calendar.YEAR)==anioActual && cal1.get(Calendar.MONTH)==mesActual && cal1.get(Calendar.DAY_OF_MONTH)==diaActual){
+                                View itemView = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_ruta, containerRutasInscritas, false);
+                                TextView tvRutaOrigen = itemView.findViewById(R.id.tvRutaOrigen);
+                                TextView tvRutaDestino = itemView.findViewById(R.id.tvRutaDestino);
+                                TextView tvHorario = itemView.findViewById(R.id.tvHorario);
+                                TextView tvEstado = itemView.findViewById(R.id.tvEstado);
 
-                        View itemView = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_ruta, containerRutasInscritas, false);
-                        TextView tvRutaOrigen = itemView.findViewById(R.id.tvRutaOrigen);
-                        TextView tvRutaDestino = itemView.findViewById(R.id.tvRutaDestino);
-                        TextView tvHorario = itemView.findViewById(R.id.tvHorario);
-                        TextView tvEstado = itemView.findViewById(R.id.tvEstado);
-
-                        tvRutaOrigen.setText("Ruta " + inscripcion.getRuta().getMunicipioOrigen());
-                        tvRutaDestino.setText(inscripcion.getRuta().getMunicipioDestino());
-                        tvHorario.setText(String.valueOf(inscripcion.getRuta().getHoraSalida()));
-                        //Configuraciones de interfaz como color etc
-                        tvEstado.setTextColor(getResources().getColor(R.color.white));
-                        tvEstado.setText(inscripcion.getRuta().getEstado().getNombre());
+                                tvRutaOrigen.setText("Ruta " + inscripcion.getRuta().getMunicipioOrigen());
+                                tvRutaDestino.setText(inscripcion.getRuta().getMunicipioDestino());
+                                tvHorario.setText(String.valueOf(inscripcion.getRuta().getHoraSalida()));
+                                //Configuraciones de interfaz como color etc
+                                tvEstado.setTextColor(getResources().getColor(R.color.white));
+                            tvEstado.setText(inscripcion.getRuta().getEstado().getNombre());
 
 
-                        //este es el boton que abre la ruta
-                        itemView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                onRutaCardClick(inscripcion.getRuta());
+                            //este es el boton que abre la ruta
+                            itemView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    onRutaCardClick(inscripcion.getRuta());
+                                }
+                            });
+
+                            // Cambiar color según el estado
+
+                            if ("Disponible".equals(inscripcion.getRuta().getEstado().getNombre())) {
+                                tvEstado.setBackgroundResource(R.drawable.bg_badge_green);
+                                containerRutasInscritas.addView(itemView);
+                            } else if ("Partió".equals(inscripcion.getRuta().getEstado().getNombre())) {
+                                tvEstado.setBackgroundResource(R.drawable.bg_badge_orange);
+                                containerRutasInscritas.addView(itemView);
+                            }else{
+                                tvEstado.setBackgroundResource(R.drawable.bg_badge_red);
+                                containerRutasInscritas.addView(itemView);
                             }
-                        });
-
-                        // Cambiar color según el estado
-
-                        if ("Disponible".equals(inscripcion.getRuta().getEstado().getNombre())) {
-                            tvEstado.setBackgroundResource(R.drawable.bg_badge_green);
-                            containerRutasInscritas.addView(itemView);
-                        } else if ("Partió".equals(inscripcion.getRuta().getEstado().getNombre())) {
-                            tvEstado.setBackgroundResource(R.drawable.bg_badge_orange);
-                            containerRutasInscritas.addView(itemView);
-                        }else{
-                            tvEstado.setBackgroundResource(R.drawable.bg_badge_red);
-                            containerRutasInscritas.addView(itemView);
                         }
+
+
+
 
                     }
                 }
@@ -257,11 +334,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-
     }
+
 
     private void RutasPorDestino() {
         //showLoading(true); // Reutiliza tu méodo de loading
@@ -274,13 +348,13 @@ public class MainActivity extends AppCompatActivity {
                 //showLoading(false); // Reutiliza tu méodo de loading
 
 
-
                 String municipioAnterior="";
                 //Agregamos un contenedor con su titulo:
                 for (Ruta ruta : data) {
                     Calendar fecha = ConversionesFecha.convertirStringACalendar(ruta.getFechaCreacion());
                     if(fecha.get(Calendar.YEAR)==anioActual && fecha.get(Calendar.MONTH)==mesActual && fecha.get(Calendar.DAY_OF_MONTH)==diaActual){
                         if(!ruta.getMunicipioOrigen().equals("Unicaes")){
+
                             View itemView = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_municipio, sectionsContainer, false);
                             LinearLayout header = itemView.findViewById(R.id.headerSection);
 
@@ -325,6 +399,7 @@ public class MainActivity extends AppCompatActivity {
                                             tvRutaOrigen.setText(ruta2.getMunicipioOrigen());
                                             tvRutaDestino.setText(ruta2.getMunicipioDestino());
                                             tvHorario.setText(""+ruta2.getHoraSalida());
+                                            asignarDestionos(ruta2.getIdRuta(),itemView2);
 
                                             itemView2.setOnClickListener(new View.OnClickListener() {
                                                 @Override
@@ -345,13 +420,10 @@ public class MainActivity extends AppCompatActivity {
                                             containerRutasAgrupadas.addView(itemView2);
                                         }
                                     }
-
                                 }
                             }
                         }
                     }
-
-
                 }
                 municipioAnterior="";
 
@@ -405,6 +477,10 @@ public class MainActivity extends AppCompatActivity {
                                             tvRutaDestino.setText(ruta2.getMunicipioDestino());
                                             tvHorario.setText(""+ruta2.getHoraSalida());
 
+
+
+                                            asignarDestionos(ruta2.getIdRuta(),itemView2);
+
                                             itemView2.setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
@@ -425,17 +501,11 @@ public class MainActivity extends AppCompatActivity {
                                             containerRutasAgrupadas.addView(itemView2);
                                         }
                                     }
-
                                 }
-
                             }
                         }
                     }
-
-
-
                 }
-
             }
 
             @Override
@@ -469,9 +539,55 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    private void CargarDestinos(){
+        repository.getPuntosRutaDeMotoristas(new RutaRepository.RepositoryCallback<List<PuntoRuta>>() {
+            @Override
+            public void onSuccess(List<PuntoRuta> data) {
+                puntoRuta= data;
+                RutasPorDestino();
+                agregarRutasInscritas();
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
+
+    }
+
+
+
+    private  void asignarDestionos(int idRuta,View itemView2){
+        TextView tvRutalabel = itemView2.findViewById(R.id.tvRutalabel);
+        tvRutalabel.setText("Destinos: ");
+        LinearLayout containerDestinos = itemView2.findViewById(R.id.containerDestinos);
+        for (PuntoRuta puntoRuta1: puntoRuta) {
+            if(puntoRuta1.getIdRuta()==idRuta){
+                puntoRutaFiltrada.add(puntoRuta1);
+                // Crear un nuevo TextView por cada punto
+                TextView tv = new TextView(itemView2.getContext());
+                tv.setText(puntoRuta1.getNombre());
+                tv.setTextSize(13);
+
+                // Añadir al contenedor
+                containerDestinos.setVisibility(View.VISIBLE);
+                containerDestinos.addView(tv);
+            }
+        }
+    }
+
     private void onRutaCardClick(Ruta ruta) {
         Intent intent = new Intent(MainActivity.this, detail_detalles_ruta.class);
         intent.putExtra("ruta", ruta);
+        intent.putExtra("puntoRuta", (Serializable) puntoRutaFiltrada);
+        startActivity(intent);
+    }
+
+    private void onFavoritoCardClick(int idHorario,String hora) {
+        Intent intent = new Intent(MainActivity.this, detail_detalles_Horarios.class);
+        intent.putExtra("idHorariogeneral", idHorario);
+        intent.putExtra("hora", hora);
         startActivity(intent);
     }
 
