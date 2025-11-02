@@ -52,6 +52,9 @@ android {
 dependencies {
 
 
+    //Implementacion para facilitar mamnejo de imagenes:
+    implementation libs.glide
+    annotationProcessor libs.compiler
 
     // Librería para Google Maps
     implementation libs.play.services.maps

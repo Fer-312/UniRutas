@@ -16,6 +16,7 @@ import java.util.List;
 public class RutaRepository {
     private SupabaseApi api;
 
+
     public RutaRepository() {
         api = SupabaseClient.getInstance();
     }
@@ -58,7 +59,7 @@ public class RutaRepository {
 
             @Override
             public void onFailure(Call<List<Ruta>> call, Throwable t) {
-                callback.onError("por xdError de conexión: " + t.getMessage());
+                callback.onError("Error de conexión: " + t.getMessage());
             }
         });
 
@@ -160,6 +161,24 @@ public class RutaRepository {
     // ========== INSCRIPCIONES ==========
     public void getInscripcionesByEstudiante(int idEstudiante, final RepositoryCallback<List<Inscripcion>> callback) {
         api.getInscripcionesByEstudiante("count", "eq." + idEstudiante).enqueue(new Callback<List<Inscripcion>>() {
+            @Override
+            public void onResponse(Call<List<Inscripcion>> call, Response<List<Inscripcion>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onError("Error al obtener inscripciones: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Inscripcion>> call, Throwable t) {
+                callback.onError("Error de conexión: " + t.getMessage());
+            }
+        });
+    }
+
+    public void getInscripcionesByRuta(int idRuta, final RepositoryCallback<List<Inscripcion>> callback) {
+        api.getInscripcionesByRuta("id_estudiante", "eq." + idRuta).enqueue(new Callback<List<Inscripcion>>() {
             @Override
             public void onResponse(Call<List<Inscripcion>> call, Response<List<Inscripcion>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -299,7 +318,7 @@ public class RutaRepository {
     }
 
     public void getComentariosPorMotorista(int idMotorista, final RepositoryCallback<List<Comentario>> callback) {
-        api.getComentariosPorMotorista("*,estudiante(id_usuario,usuario(nombre,apellido)),ruta!inner(id_motorista))", "eq." + idMotorista).enqueue(new Callback<List<Comentario>>() {
+        api.getComentariosPorMotorista("*,estudiante(id_usuario,usuario(nombre,apellido,foto_perfil)),ruta!inner(id_motorista))", "eq." + idMotorista).enqueue(new Callback<List<Comentario>>() {
             @Override
             public void onResponse(Call<List<Comentario>> call, Response<List<Comentario>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -316,19 +335,19 @@ public class RutaRepository {
         });
     }
 
-    public void createComentario(Comentario comentario, final RepositoryCallback<Comentario> callback) {
-        api.createComentario(comentario).enqueue(new Callback<Comentario>() {
+    public void createComentario(Comentario comentario, final RepositoryCallback<List<Comentario>> callback) {
+        api.createComentario(comentario).enqueue(new Callback<List<Comentario>>() {
             @Override
-            public void onResponse(Call<Comentario> call, Response<Comentario> response) {
+            public void onResponse(Call<List<Comentario>> call, Response<List<Comentario>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.onSuccess(response.body());
                 } else {
-                    callback.onError("Error al crear comentario: " + response.code());
+                    callback.onError("Error al obtener horarios: " + response.code());
                 }
             }
 
             @Override
-            public void onFailure(Call<Comentario> call, Throwable t) {
+            public void onFailure(Call<List<Comentario>> call, Throwable t) {
                 callback.onError("Error de conexión: " + t.getMessage());
             }
         });
@@ -444,21 +463,35 @@ public class RutaRepository {
             }
         });
     }
-
-    public void createUsuario(Usuario usuario, final RepositoryCallback<Usuario> callback) {
-        api.createUsuario(usuario).enqueue(new Callback<Usuario>() {
+    public void updateUsuario(int idUsuario, Usuario usuario, final RepositoryCallback<List<Usuario>> callback) {
+        api.updateUsuario("eq."+idUsuario, usuario).enqueue(new Callback<List<Usuario>>() {
             @Override
-            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                if (response.isSuccessful() && response.body() != null) {
+            public void onResponse(Call<List<Usuario>> call, Response<List<Usuario>> response) {
+                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
                     callback.onSuccess(response.body());
                 } else {
-                    callback.onError("Error al crear usuario: " + response.code());
+                    callback.onError("Error al obtener usuario: " + response.code());
                 }
             }
 
             @Override
-            public void onFailure(Call<Usuario> call, Throwable t) {
+            public void onFailure(Call<List<Usuario>> call, Throwable t) {
                 callback.onError("Error de conexión: " + t.getMessage());
+            }
+        });
+    }
+
+
+    public void createUsuario(Usuario usuario, final RepositoryCallback<List<Usuario>> callback) {
+        api.createUsuario(usuario).enqueue(new Callback<Usuario>() {
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+
             }
         });
     }

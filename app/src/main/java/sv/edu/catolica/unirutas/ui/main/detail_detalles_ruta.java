@@ -19,8 +19,11 @@ import java.util.Calendar;
 import java.util.List;
 
 import sv.edu.catolica.unirutas.R;
+import sv.edu.catolica.unirutas.data.model.Inscripcion;
 import sv.edu.catolica.unirutas.data.model.PuntoRuta;
 import sv.edu.catolica.unirutas.data.model.Ruta;
+import sv.edu.catolica.unirutas.data.repository.AuthRepository;
+import sv.edu.catolica.unirutas.data.repository.RutaRepository;
 
 public class detail_detalles_ruta extends AppCompatActivity {
     private Ruta rut;
@@ -32,10 +35,12 @@ public class detail_detalles_ruta extends AppCompatActivity {
     private TextView tvDriverNombre;
     private TextView tvRutaOrigen;
     private TextView tvRutaDestino;
-    private TextView tvPlaca, tvRutalabel;
+    private TextView tvPlaca, tvRutalabel, tvinscrito;
     private ImageButton btnregresar;
     private LinearLayout containerDestinos;
-
+    private RutaRepository repository;
+    private AuthRepository auth;
+    private  boolean inscrito;
 
 
 
@@ -52,11 +57,15 @@ public class detail_detalles_ruta extends AppCompatActivity {
         });
 
         initComponentes();
-        asignardetalles();
+
 
     }
 
     private void initComponentes(){
+        auth = new AuthRepository(this);
+        inscrito=false;
+        tvinscrito = findViewById(R.id.tvinscrito);
+
         puntoRuta = (List<PuntoRuta>) getIntent().getSerializableExtra("puntoRuta");
         rut = (Ruta) getIntent().getSerializableExtra("ruta");
         tvDEstado = findViewById(R.id.tvDEstado);
@@ -76,6 +85,26 @@ public class detail_detalles_ruta extends AppCompatActivity {
                 finish();
             }
         });
+        repository = new RutaRepository();
+
+        repository.getInscripcionesByRuta(rut.getIdRuta(), new RutaRepository.RepositoryCallback<List<Inscripcion>>() {
+            @Override
+            public void onSuccess(List<Inscripcion> data) {
+                for (Inscripcion item : data) {
+                    if(item.getIdEstudiante()== auth.getCurrentEstudianteID()){
+                        inscrito=true;
+                    }
+                }
+
+                asignardetalles();
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
+
 
 
     }
@@ -121,23 +150,32 @@ public class detail_detalles_ruta extends AppCompatActivity {
         tvRutaDestino.setText(rut.getMunicipioDestino());
         tvPlaca.setText(rut.getMicrobus().getPlacaVehiculo());
         tvRutalabel.setText("Destinos: ");
+        int count=0;
         for (PuntoRuta puntoruta: puntoRuta){
-            // Crear un nuevo TextView por cada punto
-            TextView tv = new TextView(this);
-            tv.setText(puntoruta.getNombre());
-            tv.setTextSize(13);
 
-            // Añadir al contenedor
-            containerDestinos.setVisibility(View.VISIBLE);
-            containerDestinos.addView(tv);
+            if(puntoruta.getIdRuta()==rut.getIdRuta()){
+                // Crear un nuevo TextView por cada punto
+                TextView tv = new TextView(this);
+                tv.setText(puntoruta.getNombre());
+                tv.setTextSize(13);
+
+                // Añadir al contenedor
+                containerDestinos.setVisibility(View.VISIBLE);
+                containerDestinos.addView(tv);
+            }
+
         }
-
+        if(inscrito){
+            tvinscrito.setVisibility(View.VISIBLE);
+        }
 
     }
 
     public void infomotorista(View view) {
         Intent intent = new Intent(detail_detalles_ruta.this, detail_detalles_motorista.class);
         intent.putExtra("motorista", rut.getMotorista());
+        intent.putExtra("idRuta", rut.getIdRuta());
+        intent.putExtra("inscritoo", inscrito);
         startActivity(intent);
 
     }

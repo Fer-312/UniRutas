@@ -25,6 +25,7 @@ public class AuthRepository {
     private static final String KEY_USER_EMAIL = "user_email";
     private static final String KEY_USER_NAME = "user_name";
     private static final String KEY_USER_PHONE = "user_phone";
+    private static final String KEY_USER_FOTO = "foto_perfil";
 
     public int estudiantexdId=0;
 
@@ -140,6 +141,7 @@ public class AuthRepository {
                 .remove(KEY_USER_NAME)
                 .remove(KEY_ESTUDENT_ID)
                 .remove(KEY_USER_PHONE)
+                .remove(KEY_USER_FOTO)
                 .apply();
 
 
@@ -160,6 +162,7 @@ public class AuthRepository {
         usuario.setCorreo(prefs.getString(KEY_USER_EMAIL, ""));
         usuario.setNombre(prefs.getString(KEY_USER_NAME, ""));
         usuario.setTelefono(prefs.getString(KEY_USER_PHONE, ""));
+        usuario.setFotoPerfil(prefs.getString(KEY_USER_FOTO, ""));
 
         return usuario;
     }
@@ -176,12 +179,13 @@ public class AuthRepository {
                 .putInt(KEY_ESTUDENT_ID, estudianteId)
                 .apply();
     }
-    private void saveUserData(Usuario usuario) {
+    public void saveUserData(Usuario usuario) {
         prefs.edit()
                 .putInt(KEY_USER_ID, usuario.getIdUsuario())
                 .putString(KEY_USER_PHONE, usuario.getTelefono())
                 .putString(KEY_USER_EMAIL, usuario.getCorreo())
-                .putString(KEY_USER_NAME, usuario.getNombre() + " " + usuario.getApellido())
+                .putString(KEY_USER_NAME, usuario.getNombre())
+                .putString(KEY_USER_FOTO, usuario.getFotoPerfil())
                 .apply();
     }
 }

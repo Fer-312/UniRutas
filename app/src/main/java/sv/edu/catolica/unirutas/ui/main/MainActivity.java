@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -13,7 +14,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.bumptech.glide.Glide;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,29 +36,41 @@ import sv.edu.catolica.unirutas.data.repository.AuthRepository;
 import sv.edu.catolica.unirutas.data.repository.RutaRepository;
 import sv.edu.catolica.unirutas.ui.main.auth.LoginActivity;
 import sv.edu.catolica.unirutas.utils.ConversionesFecha;
+import sv.edu.catolica.unirutas.utils.FileUtils;
 
 public class MainActivity extends AppCompatActivity {
 
-    private LinearLayout containerRutasInscritas;
-    private LinearLayout containerRutasFavoritas,sectionsContainer,containerRutasFavoritas2,containerHorariosF;
+    private LinearLayout containerRutasInscritas,containerRutasFavoritas,sectionsContainer,containerRutasFavoritas2,containerHorariosF;
     private RutaRepository repository;
     private AuthRepository authRepository;
     private List<Ruta> listRuta;
     private List<Favorito> listfavoritosUsuario;
     private TextView Encabezado;
-    private List<PuntoRuta> puntoRuta;
-    private List<PuntoRuta> puntoRutaFiltrada = new ArrayList<>();
+    private List<PuntoRuta> puntoRuta, puntoRutaFiltrada = new ArrayList<>();
     private List<Integer> idFavoritos = new ArrayList<>();
 
+    //==================== Variables para resumen ====================================
+    private int count=0;
+    private double gastado=0;
+
+    //=========================== Variables de Tiempo =====================
+    Calendar ahora = Calendar.getInstance();;
+    int mesActual = ahora.get(Calendar.MONTH);
+    int anioActual = ahora.get(Calendar.YEAR);
+    int diaActual = ahora.get(Calendar.DAY_OF_MONTH);
+
+    //==================== Variables de pestaña del Perfil ====================================
+    private Button btnEditarPerfil,btnHistorial;
     private TextView tvRutasto, tvGastado;
 
+    //==================== Posibiilidad de boton cargando(No en uso) ====================================
     private ProgressBar progressBar;
     private void showLoading(boolean show) {
         progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
         containerRutasInscritas.setEnabled(!show);
-
-
     }
+
+    //==================== Metodos onCreate ====================================
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,30 +91,15 @@ public class MainActivity extends AppCompatActivity {
             Encabezado.setText("Hola, " + usuarioActual.getNombre());
 
         }
-        containerRutasInscritas = findViewById(R.id.containerRutasInscritas);
-        containerRutasFavoritas = findViewById(R.id.containerRutasFavoritas);
-        sectionsContainer = findViewById(R.id.sections_container);
-        containerRutasFavoritas2 = findViewById(R.id.containerRutasFavoritas2);
-        containerHorariosF = findViewById(R.id.containerHorariosF);
 
-
-
-
-        repository = new RutaRepository();
-
-        // Agregar rutas
+        initComponentes();
         CargarDestinos();
         repository.getEstudianteByIdUsuario(authRepository.getCurrentUser().getIdUsuario(), new RutaRepository.RepositoryCallback<List<Estudiante>>() {
             @Override
             public void onSuccess(List<Estudiante> data) {
                 for (Estudiante estudiante:data) {
                     authRepository.saveUserData(estudiante.getIdEstudiante());
-
-                    Toast.makeText(MainActivity.this,String.valueOf(authRepository.getCurrentEstudianteID()),Toast.LENGTH_LONG).show();
                 }
-                tvGastado = findViewById(R.id.tvGastado);
-                tvRutasto = findViewById(R.id.tvTotalRutas);
-
                 Dashboard_AgregarRutasFavoritas();
 
             }
@@ -110,12 +111,43 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
         Infoperfil();
+        initTabhost();
+    }
+    //==================== Metodos al Inicializar ALL =============================================
+    private void initComponentes(){
+        repository = new RutaRepository();
+        tvGastado = findViewById(R.id.tvGastado);
+        tvRutasto = findViewById(R.id.tvTotalRutas);
+        containerRutasInscritas = findViewById(R.id.containerRutasInscritas);
+        containerRutasFavoritas = findViewById(R.id.containerRutasFavoritas);
+        sectionsContainer = findViewById(R.id.sections_container);
+        containerRutasFavoritas2 = findViewById(R.id.containerRutasFavoritas2);
+        containerHorariosF = findViewById(R.id.containerHorariosF);
+        btnEditarPerfil = findViewById(R.id.btnEditarPerfil);
+        btnHistorial = findViewById(R.id.btnHistorial);
 
 
-        //Espacio para tabs
+        btnEditarPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intet = new Intent(MainActivity.this, detail_editar_perfil.class);
+                startActivity(intet);
+            }
+        });
+
+        btnHistorial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intet = new Intent(MainActivity.this, Ver_HistorialRuta_usuario.class);
+                startActivity(intet);
+            }
+        });
+
+    }
+
+    private void initTabhost(){
+//Espacio para tabs
         Resources res = getResources();
 
         TabHost tabControl = (TabHost) findViewById(R.id.MiTabHost);
@@ -140,10 +172,36 @@ public class MainActivity extends AppCompatActivity {
         spec.setContent(R.id.tab4);
         spec.setIndicator("",res.getDrawable(R.drawable.ic_user));
         tabControl.addTab(spec);
+    }
 
+    private void CargarDestinos(){
+        repository.getPuntosRutaDeMotoristas(new RutaRepository.RepositoryCallback<List<PuntoRuta>>() {
+            @Override
+            public void onSuccess(List<PuntoRuta> data) {
+                puntoRuta= data;
+                RutasPorDestino();
+                agregarRutasInscritas();
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
 
     }
 
+    //==================== Logica para regreso y actualización de datos Main ====================================
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Usuario user = authRepository.getCurrentUser();
+        Infoperfil();
+        Encabezado.setText("Hola, " + user.getNombre());
+    }
+
+    //==================== Metodos Para pestaña Favoritos ====================================
     private void agregarPestañaFavoritos(){
         for(Favorito favorito: listfavoritosUsuario) {
             View itemView = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_ruta, containerRutasFavoritas2, false);
@@ -152,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
             TextView tvHorario = itemView.findViewById(R.id.tvHorario);
             TextView tvEstado = itemView.findViewById(R.id.tvEstado);
             tvEstado.setVisibility(View.GONE);
-            tvRutaOrigen.setText("Rutas de hora clase ");
+            tvRutaOrigen.setText("Rutas para hora clase ");
             tvHorario.setVisibility(View.GONE);
             tvRutaDestino.setText(""+favorito.getHorario().getHora());
 
@@ -175,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
                     TextView tvHorario = itemView.findViewById(R.id.tvHorario);
                     TextView tvEstado = itemView.findViewById(R.id.tvEstado);
                     tvEstado.setVisibility(View.GONE);
-                    tvRutaOrigen.setText("Rutas de hora clase ");
+                    tvRutaOrigen.setText("Rutas para hora clase ");
                     tvHorario.setVisibility(View.GONE);
                     tvRutaDestino.setText(""+hora.getHora());
 
@@ -208,6 +266,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+    //==================== Metodos Dashboard ====================================
+    //-------------------- Metodos Para Seccion Favoritos del Dashboard -----------------------------------
     private void Dashboard_AgregarRutasFavoritas() {
         repository.getFavoritosByUsuario(authRepository.getCurrentUser().getIdUsuario(),new RutaRepository.RepositoryCallback<List<Favorito>>() {
             @Override
@@ -215,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
                 listfavoritosUsuario = data;
                 agregarPestañaFavoritos();
                 for(Favorito favorito: data){
-                    idFavoritos.add(favorito.getIdFavorito());
+                    idFavoritos.add(favorito.getIdHora());
                         View itemView = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_ruta, containerRutasFavoritas, false);
                         TextView tvRutaOrigen = itemView.findViewById(R.id.tvRutaOrigen);
                         TextView tvRutaDestino = itemView.findViewById(R.id.tvRutaDestino);
@@ -253,14 +314,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-    private int count=0;
-    Calendar ahora = Calendar.getInstance();;
-    int mesActual = ahora.get(Calendar.MONTH);
-    int anioActual = ahora.get(Calendar.YEAR);
-    int diaActual = ahora.get(Calendar.DAY_OF_MONTH);
-    private double gastado=0;
-
+    //-------------------- Metodos Para Seccion Favoritos del Dashboard -----------------------------------
     private void agregarRutasInscritas() {
         repository.getInscripcionesConRuta(new RutaRepository.RepositoryCallback<List<Inscripcion>>() {
             @Override
@@ -295,6 +349,7 @@ public class MainActivity extends AppCompatActivity {
                                 //Configuraciones de interfaz como color etc
                                 tvEstado.setTextColor(getResources().getColor(R.color.white));
                             tvEstado.setText(inscripcion.getRuta().getEstado().getNombre());
+                            asignarDestionos(inscripcion.getRuta().getIdRuta(),itemView);
 
 
                             //este es el boton que abre la ruta
@@ -337,6 +392,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    //==================== Metodos Para pestaña Perfil ====================================
+    private void Infoperfil(){
+        Usuario user = authRepository.getCurrentUser();
+        TextView tvNombre = findViewById(R.id.txtNombre);
+        TextView tvCorreo = findViewById(R.id.tvCorreo);
+        TextView tvTelefono = findViewById(R.id.tvTelefono);
+        ImageView imgPerfil = findViewById(R.id.imgPerfil);
+
+        //mi metodo del Glide
+        FileUtils.MostrarImagen(MainActivity.this,imgPerfil,user.getFotoPerfil());
+        tvNombre.setText(user.getNombre());
+        tvCorreo.setText(user.getCorreo());
+        tvTelefono.setText(user.getTelefono());
+
+    }
+
+
+    //==================== Metodos pestaña Rutas ====================================
     private void RutasPorDestino() {
         //showLoading(true); // Reutiliza tu méodo de loading
         //para rutas por origen
@@ -518,18 +591,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void Infoperfil(){
-        Usuario user = authRepository.getCurrentUser();
-        TextView tvNombre = findViewById(R.id.txtNombre);
-        TextView tvCorreo = findViewById(R.id.tvCorreo);
-        TextView tvTelefono = findViewById(R.id.tvTelefono);
 
-        tvNombre.setText(user.getNombre());
-        tvCorreo.setText(user.getCorreo());
-        tvTelefono.setText(user.getTelefono());
-
-    }
-
+    //==================== Metodos Auxiliares ====================================
     public   void Logout(View v){
         authRepository.logout();
         Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show();
@@ -539,44 +602,38 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    private void CargarDestinos(){
-        repository.getPuntosRutaDeMotoristas(new RutaRepository.RepositoryCallback<List<PuntoRuta>>() {
-            @Override
-            public void onSuccess(List<PuntoRuta> data) {
-                puntoRuta= data;
-                RutasPorDestino();
-                agregarRutasInscritas();
-            }
-
-            @Override
-            public void onError(String error) {
-
-            }
-        });
-
-    }
-
-
-
     private  void asignarDestionos(int idRuta,View itemView2){
         TextView tvRutalabel = itemView2.findViewById(R.id.tvRutalabel);
         tvRutalabel.setText("Destinos: ");
         LinearLayout containerDestinos = itemView2.findViewById(R.id.containerDestinos);
         for (PuntoRuta puntoRuta1: puntoRuta) {
             if(puntoRuta1.getIdRuta()==idRuta){
-                puntoRutaFiltrada.add(puntoRuta1);
+                boolean existe = false;
+                for (PuntoRuta pr : puntoRutaFiltrada) {
+                    if (pr.getIdPunto() == puntoRuta1.getIdPunto()) {
+                        existe = true;
+                        break;
+                    }
+                }
+                if (!existe){
+                    puntoRutaFiltrada.add(puntoRuta1);
+
+                }
                 // Crear un nuevo TextView por cada punto
                 TextView tv = new TextView(itemView2.getContext());
                 tv.setText(puntoRuta1.getNombre());
-                tv.setTextSize(13);
+                tv.setTextSize(14);
 
                 // Añadir al contenedor
                 containerDestinos.setVisibility(View.VISIBLE);
                 containerDestinos.addView(tv);
+
             }
         }
     }
 
+
+    //==================== Metodos de Navegacion ====================================
     private void onRutaCardClick(Ruta ruta) {
         Intent intent = new Intent(MainActivity.this, detail_detalles_ruta.class);
         intent.putExtra("ruta", ruta);

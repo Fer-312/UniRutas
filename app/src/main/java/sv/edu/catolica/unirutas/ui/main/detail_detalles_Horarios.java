@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,12 +27,13 @@ import sv.edu.catolica.unirutas.data.repository.RutaRepository;
 import sv.edu.catolica.unirutas.utils.ConversionesFecha;
 
 public class detail_detalles_Horarios extends AppCompatActivity {
-    private LinearLayout containerRutasInscritas2, containerRutasInscritas;
-    private TextView tvHorarioGeneral;
+    private LinearLayout containerRutasInscritas2;
+    private TextView tvHorarioGeneral,msjEntrantes;
     private int idHorariogeneral;
 //Se podrian mandar no hacer la consulta
     private List<PuntoRuta> puntoRutaFiltrada = new ArrayList<>();
     private List<PuntoRuta> puntoRuta;
+    private ImageButton btnregresar;
 
 
     private RutaRepository repository;
@@ -54,13 +56,21 @@ public class detail_detalles_Horarios extends AppCompatActivity {
     int diaActual = ahora.get(Calendar.DAY_OF_MONTH);
 
     private void initComponentes(){
-        containerRutasInscritas = findViewById(R.id.containerRutasInscritas);
         containerRutasInscritas2 = findViewById(R.id.containerRutasInscritas2);
         tvHorarioGeneral = findViewById(R.id.tvHorarioGeneral);
         idHorariogeneral = getIntent().getIntExtra("idHorariogeneral", 0);
         tvHorarioGeneral.setText(getIntent().getStringExtra("hora"));
         repository = new RutaRepository();
-        cargarinfo(idHorariogeneral);
+        btnregresar = findViewById(R.id.btnregresar);
+        btnregresar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        msjEntrantes = findViewById(R.id.msjEntrantes);
+        CargarDestinos();
+
 
 
 
@@ -70,6 +80,7 @@ public class detail_detalles_Horarios extends AppCompatActivity {
             @Override
             public void onSuccess(List<PuntoRuta> data) {
                 puntoRuta= data;
+                cargarinfo(idHorariogeneral);
             }
 
             @Override
@@ -85,13 +96,15 @@ public class detail_detalles_Horarios extends AppCompatActivity {
             @Override
             public void onSuccess(List<Ruta> data) {
                 String municipioAnterior="";
-                //Agregamos un contenedor con su titulo:
+                //Agregamos un contenedor con su titulo para entrantes:
                 for (Ruta ruta : data) {
                     Calendar fecha = ConversionesFecha.convertirStringACalendar(ruta.getFechaCreacion());
                     if(fecha.get(Calendar.YEAR)==anioActual && fecha.get(Calendar.MONTH)==mesActual && fecha.get(Calendar.DAY_OF_MONTH)==diaActual){
                         if(!ruta.getMunicipioOrigen().equals("Unicaes")){
+                            msjEntrantes.setVisibility(View.GONE);
 
-                            View itemView = LayoutInflater.from(detail_detalles_Horarios.this).inflate(R.layout.item_municipio, containerRutasInscritas, false);
+
+                            View itemView = LayoutInflater.from(detail_detalles_Horarios.this).inflate(R.layout.item_municipio, containerRutasInscritas2, false);
                             LinearLayout header = itemView.findViewById(R.id.headerSection);
 
                             TextView tv_section_titulo = itemView.findViewById(R.id.tv_section_titulo);
@@ -114,7 +127,7 @@ public class detail_detalles_Horarios extends AppCompatActivity {
                             });
 
                             if (!ruta.getMunicipioOrigen().equals(municipioAnterior) ){
-                                containerRutasInscritas.addView(itemView);
+                                containerRutasInscritas2.addView(itemView);
                                 municipioAnterior=ruta.getMunicipioOrigen();
 
 
@@ -169,6 +182,7 @@ public class detail_detalles_Horarios extends AppCompatActivity {
             }
         });
     }
+
     private  void asignarDestionos(int idRuta,View itemView2){
         TextView tvRutalabel = itemView2.findViewById(R.id.tvRutalabel);
         tvRutalabel.setText("Destinos: ");
@@ -187,6 +201,7 @@ public class detail_detalles_Horarios extends AppCompatActivity {
             }
         }
     }
+
     private void onRutaCardClick(Ruta ruta) {
         Intent intent = new Intent(detail_detalles_Horarios.this, detail_detalles_ruta.class);
         intent.putExtra("ruta", ruta);

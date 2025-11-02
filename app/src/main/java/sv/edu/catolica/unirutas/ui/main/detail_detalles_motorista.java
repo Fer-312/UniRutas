@@ -4,8 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,13 +18,16 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import sv.edu.catolica.unirutas.R;
 import sv.edu.catolica.unirutas.data.model.Comentario;
 import sv.edu.catolica.unirutas.data.model.Motorista;
+import sv.edu.catolica.unirutas.data.repository.AuthRepository;
 import sv.edu.catolica.unirutas.data.repository.RutaRepository;
+import sv.edu.catolica.unirutas.utils.FileUtils;
 
 public class detail_detalles_motorista extends AppCompatActivity {
     private Motorista motorista;
@@ -32,9 +38,15 @@ public class detail_detalles_motorista extends AppCompatActivity {
     private TextView tvEmail;
     private ImageButton btnregresar;
     private RutaRepository repository;
-    private LinearLayout containerComentarios;
-    private Button btnVerMas;
+    private AuthRepository authRepository;
+    private LinearLayout containerComentarios,linearañadircomentarioInscrito;
+    private Button btnVerMas, ComentarButton;
+    private int idRuta;
+    private RatingBar ratingBar;
+    private TextView tvValorRating;
+    private boolean inscrito;
 
+    private EditText etComentario;
     private List<Comentario> coments;
 
     @Override
@@ -52,13 +64,22 @@ public class detail_detalles_motorista extends AppCompatActivity {
 
     }
     private void initComponentes(){
+        authRepository = new AuthRepository(detail_detalles_motorista.this);
         motorista = (Motorista) getIntent().getSerializableExtra("motorista");
+        idRuta = getIntent().getIntExtra("idRuta",0);
+        inscrito = getIntent().getBooleanExtra("inscritoo",false);
+        linearañadircomentarioInscrito = findViewById(R.id.linearañadircomentarioInscrito);
+        if(inscrito){
+            linearañadircomentarioInscrito.setVisibility(View.VISIBLE);
+        }
+
         tvMotoristaName = findViewById(R.id.tvMotoristaName);
         tvRate = findViewById(R.id.tvRate);
         tvDiasService = findViewById(R.id.tvDiasService);
         tvTelefono = findViewById(R.id.tvTelefono);
         tvEmail = findViewById(R.id.tvEmail);
         btnregresar = findViewById(R.id.btnregresar);
+        etComentario = findViewById(R.id.etComentario);
         btnregresar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +90,12 @@ public class detail_detalles_motorista extends AppCompatActivity {
         containerComentarios = findViewById(R.id.containerComentarios);
         btnVerMas = findViewById(R.id.btnVerMas);
         ComentariosRecientes = findViewById(R.id.ComentariosRecientes);
+        ratingBar = findViewById(R.id.ratingBar);
+        tvValorRating = findViewById(R.id.tvValorRating);
+        ComentarButton = findViewById(R.id.ComentarButton);
+        ratingBar.setOnRatingBarChangeListener((ratingBar1, rating, fromUser) -> {
+            tvValorRating.setText(String.valueOf(rating));
+        });
 
     }
 
@@ -105,12 +132,17 @@ public class detail_detalles_motorista extends AppCompatActivity {
 
 
     }
+
     private void addComentarios(Comentario comentario){
         View itemView = LayoutInflater.from(detail_detalles_motorista.this).inflate(R.layout.item_comentario, containerComentarios, false);
         TextView comment_user_name = itemView.findViewById(R.id.comment_user_name);
         TextView comment_text = itemView.findViewById(R.id.comment_text);
         TextView comment_date = itemView.findViewById(R.id.comment_date);
         TextView comment_rating = itemView.findViewById(R.id.comment_rating);
+        ImageView comment_user_image = itemView.findViewById(R.id.comment_user_image);
+
+        FileUtils.MostrarImagen(detail_detalles_motorista.this, comment_user_image, comentario.getEstudiante().getUsuario().getFotoPerfil());
+
         comment_user_name.setText(comentario.getEstudiante().getUsuario().getNombre());
         comment_text.setText(comentario.getContenido());
         comment_date.setText(comentario.getFechaComentario());
@@ -140,5 +172,34 @@ public class detail_detalles_motorista extends AppCompatActivity {
         }
 
 
+    }
+
+    public void Comentar(View view) {
+        if(ComentarButton.getText().toString().equals("Enviar")){
+            if(ratingBar.getRating()==0){
+
+            }else{
+                Comentario comentario = new Comentario();
+                comentario.setPuntuacion(BigDecimal.valueOf(Double.parseDouble(tvValorRating.getText().toString())));
+                LocalDateTime fechaCompleta = LocalDateTime.now();
+                comentario.setFechaComentario(fechaCompleta.toString());
+                comentario.setContenido(etComentario.getText().toString());
+                comentario.setIdEstudiante(authRepository.getCurrentEstudianteID());
+                comentario.setIdRuta(idRuta);
+
+                repository.createComentario(comentario, new RutaRepository.RepositoryCallback<List<Comentario>>() {
+                    @Override
+                    public void onSuccess(List<Comentario> data) {
+                        Toast.makeText(detail_detalles_motorista.this, "Se Ah añadido tu comentario", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
+            }
+
+        }
     }
 }

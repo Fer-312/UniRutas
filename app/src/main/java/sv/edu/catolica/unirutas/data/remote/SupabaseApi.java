@@ -26,7 +26,7 @@ public interface SupabaseApi {
     Call<Usuario> createUsuario(@Body Usuario usuario);
 
     @PATCH("usuario")
-    Call<Usuario> updateUsuario(@Query("id_usuario") int idUsuario, @Body Usuario usuario);
+    Call<List<Usuario>> updateUsuario(@Query("id_usuario") String idUsuario, @Body Usuario usuario);
 
     @DELETE("usuario")
     Call<Void> deleteUsuario(@Query("id_usuario") int idUsuario);
@@ -93,7 +93,10 @@ public interface SupabaseApi {
     );
 
     @GET("inscripcion")
-    Call<List<Inscripcion>> getInscripcionesByRuta(@Query("id_ruta") int idRuta);
+    Call<List<Inscripcion>> getInscripcionesByRuta(
+            @Query("select") String select,
+            @Query("id_ruta") String idRuta
+    );
 
     @GET("inscripcion")
     Call<List<Inscripcion>> getInscripcionesConRuta(@Query("select") String select);
@@ -143,7 +146,7 @@ public interface SupabaseApi {
 
 
     @POST("comentario")
-    Call<Comentario> createComentario(@Body Comentario comentario);
+    Call<List<Comentario>> createComentario(@Body Comentario comentario);
 
     // ========== MENSAJES ==========
     @GET("mensaje")

@@ -3,10 +3,13 @@ package sv.edu.catolica.unirutas.data.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+import sv.edu.catolica.unirutas.utils.ConversionesFecha;
 
 public class Comentario {
     @SerializedName("id_comentario")
-    private int idComentario;
+    private Integer idComentario;
 
     @SerializedName("id_estudiante")
     private Integer idEstudiante;
@@ -61,7 +64,10 @@ public class Comentario {
         } catch (Exception e) {
             return fechaComentario;
         } }
-    public void setFechaComentario(String fechaComentario) { this.fechaComentario = fechaComentario; }
+    public void setFechaComentario(String fechaComentario) {
+        this.fechaComentario = fechaComentario;
+    }
+
 
     public Ruta getRuta() {
         return ruta;

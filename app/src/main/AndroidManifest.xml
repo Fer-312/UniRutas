@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="29" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
     <application
         android:allowBackup="true"
@@ -13,6 +18,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.UniRutas">
+        <activity
+            android:name=".ui.main.Ver_HistorialRuta_usuario"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.detail_editar_perfil"
+            android:exported="false"></activity>
         <activity
             android:name=".ui.main.detail_detalles_Horarios"
             android:exported="false" />
