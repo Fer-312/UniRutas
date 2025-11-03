@@ -10,7 +10,10 @@
 
     <color name="unirutas_primary">#002B5B</color>         <!-- Azul oscuro (inicio degradado) -->
     <color name="unirutas_secondary">#008080</color>       <!-- Verde azulado (fin degradado) -->
-    <color name="unirutas_accent">#FF6B00</color>          <!-- Naranja del pin -->
+    <color name="unirutas_accent">#BFD7EA</color>
+
+
+
     <color name="unirutas_white">#FFFFFF</color>           <!-- Blanco para icono y texto -->
     <color name="unirutas_background_dark">#121212</color> <!-- Fondo oscuro alternativo -->
 

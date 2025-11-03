@@ -82,6 +82,9 @@ public interface SupabaseApi {
     @GET("motorista")
     Call<List<Motorista>> getMotoristaById(@Query("id_motorista") int idMotorista);
 
+    @GET("motorista")
+    Call<List<Motorista>> getMotoristaByIdUsuario(@Query("id_usuario") String idUsuario);
+
     // ========== INSCRIPCIONES ==========
     @GET("inscripcion")
     Call<List<Inscripcion>> getInscripciones();

@@ -26,6 +26,7 @@ public class AuthRepository {
     private static final String KEY_USER_NAME = "user_name";
     private static final String KEY_USER_PHONE = "user_phone";
     private static final String KEY_USER_FOTO = "foto_perfil";
+    private static final String KEY_MOTORISTA_ID = "motorista_id";
 
     public int estudiantexdId=0;
 
@@ -142,9 +143,8 @@ public class AuthRepository {
                 .remove(KEY_ESTUDENT_ID)
                 .remove(KEY_USER_PHONE)
                 .remove(KEY_USER_FOTO)
+                .remove(KEY_MOTORISTA_ID)
                 .apply();
-
-
     }
 
 
@@ -177,6 +177,13 @@ public class AuthRepository {
         estudiantexdId=estudianteId;
         prefs.edit()
                 .putInt(KEY_ESTUDENT_ID, estudianteId)
+                .apply();
+    }
+    // GUARDAR DATOS DEL USUARIO
+    public void saveUserDataMotorista( int motoristaId) {
+        estudiantexdId=motoristaId;
+        prefs.edit()
+                .putInt(KEY_MOTORISTA_ID, motoristaId)
                 .apply();
     }
     public void saveUserData(Usuario usuario) {

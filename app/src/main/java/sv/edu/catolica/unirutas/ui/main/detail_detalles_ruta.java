@@ -15,7 +15,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
 import java.util.List;
 
 import sv.edu.catolica.unirutas.R;
@@ -35,9 +34,9 @@ public class detail_detalles_ruta extends AppCompatActivity {
     private TextView tvDriverNombre;
     private TextView tvRutaOrigen;
     private TextView tvRutaDestino;
-    private TextView tvPlaca, tvRutalabel, tvinscrito;
+    private TextView tvPlaca, tvRutalabel;
     private ImageButton btnregresar;
-    private LinearLayout containerDestinos;
+    private LinearLayout containerDestinos, LlInscrito;
     private RutaRepository repository;
     private AuthRepository auth;
     private  boolean inscrito;
@@ -64,7 +63,7 @@ public class detail_detalles_ruta extends AppCompatActivity {
     private void initComponentes(){
         auth = new AuthRepository(this);
         inscrito=false;
-        tvinscrito = findViewById(R.id.tvinscrito);
+        LlInscrito = findViewById(R.id.tvinscrito);
 
         puntoRuta = (List<PuntoRuta>) getIntent().getSerializableExtra("puntoRuta");
         rut = (Ruta) getIntent().getSerializableExtra("ruta");
@@ -112,7 +111,7 @@ public class detail_detalles_ruta extends AppCompatActivity {
     private void asignardetalles(){
         tvDEstado.setText(rut.getEstado().getNombre());
         if ("Disponible".equals(rut.getEstado().getNombre())) {
-            tvDEstado.setBackgroundResource(R.drawable.bg_badge_green);
+            tvDEstado.setBackgroundResource(R.drawable.bg_badge_disponible);
         } else if ("Partió".equals(rut.getEstado().getNombre())) {
             tvDEstado.setBackgroundResource(R.drawable.bg_badge_orange);
         }else{
@@ -144,7 +143,7 @@ public class detail_detalles_ruta extends AppCompatActivity {
         }
 
         tvHoraSal.setText(""+rut.getHoraSalida());
-        tvTarifa.setText(rut.getTarifa().toString());
+        tvTarifa.setText("$ "+rut.getTarifa().toString());
         tvDriverNombre.setText(rut.getMotorista().getUsuario().getNombre());
         tvRutaOrigen.setText(rut.getMunicipioOrigen());
         tvRutaDestino.setText(rut.getMunicipioDestino());
@@ -166,7 +165,7 @@ public class detail_detalles_ruta extends AppCompatActivity {
 
         }
         if(inscrito){
-            tvinscrito.setVisibility(View.VISIBLE);
+            LlInscrito.setVisibility(View.VISIBLE);
         }
 
     }

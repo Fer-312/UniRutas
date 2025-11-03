@@ -29,6 +29,7 @@ import sv.edu.catolica.unirutas.data.model.Estudiante;
 import sv.edu.catolica.unirutas.data.model.Favorito;
 import sv.edu.catolica.unirutas.data.model.Horario;
 import sv.edu.catolica.unirutas.data.model.Inscripcion;
+import sv.edu.catolica.unirutas.data.model.Motorista;
 import sv.edu.catolica.unirutas.data.model.PuntoRuta;
 import sv.edu.catolica.unirutas.data.model.Ruta;
 import sv.edu.catolica.unirutas.data.model.Usuario;
@@ -91,9 +92,27 @@ public class MainActivity extends AppCompatActivity {
             Encabezado.setText("Hola, " + usuarioActual.getNombre());
 
         }
+        //========================inicia aqui ========================
+        repository.getMotoristaByIdUsuario(authRepository.getCurrentUser().getIdUsuario(), new RutaRepository.RepositoryCallback<List<Motorista>>() {
+            @Override
+            public void onSuccess(List<Motorista> data) {
+                for (Motorista motorista:data){
+                    authRepository.saveUserDataMotorista(motorista.getIdMotorista());
 
+
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
         initComponentes();
         CargarDestinos();
+
+
+
         repository.getEstudianteByIdUsuario(authRepository.getCurrentUser().getIdUsuario(), new RutaRepository.RepositoryCallback<List<Estudiante>>() {
             @Override
             public void onSuccess(List<Estudiante> data) {

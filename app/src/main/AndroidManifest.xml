@@ -23,7 +23,9 @@
             android:exported="false" />
         <activity
             android:name=".ui.main.detail_editar_perfil"
-            android:exported="false"></activity>
+            android:exported="false">
+
+        </activity>
         <activity
             android:name=".ui.main.detail_detalles_Horarios"
             android:exported="false" />

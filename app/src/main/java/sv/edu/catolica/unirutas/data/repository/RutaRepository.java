@@ -140,6 +140,7 @@ public class RutaRepository {
         });
     }
 
+
     public void getEstudiantes(final RepositoryCallback<List<Estudiante>> callback) {
         api.getEstudiantes().enqueue(new Callback<List<Estudiante>>() {
             @Override
@@ -153,6 +154,24 @@ public class RutaRepository {
 
             @Override
             public void onFailure(Call<List<Estudiante>> call, Throwable t) {
+                callback.onError("Error de conexión: " + t.getMessage());
+            }
+        });
+    }
+    // ========== MOTORISTA ==========
+    public void getMotoristaByIdUsuario (int idUsuario,final RepositoryCallback<List<Motorista>> callback) {
+        api.getMotoristaByIdUsuario("eq." +idUsuario).enqueue(new Callback<List<Motorista>>() {
+            @Override
+            public void onResponse(Call<List<Motorista>> call, Response<List<Motorista>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onError("Error al obtener inscripciones: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Motorista>> call, Throwable t) {
                 callback.onError("Error de conexión: " + t.getMessage());
             }
         });
