@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
         //========================inicia aqui ========================
-        repository.getMotoristaByIdUsuario(authRepository.getCurrentUser().getIdUsuario(), new RutaRepository.RepositoryCallback<List<Motorista>>() {
+        /*repository.getMotoristaByIdUsuario(authRepository.getCurrentUser().getIdUsuario(), new RutaRepository.RepositoryCallback<List<Motorista>>() {
             @Override
             public void onSuccess(List<Motorista> data) {
                 for (Motorista motorista:data){
@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        */
         initComponentes();
         CargarDestinos();
 

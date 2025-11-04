@@ -4,32 +4,44 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@drawable/bg_card"
-    android:padding="16dp"
-    android:layout_marginBottom="12dp"
+    android:background="@drawable/bg_comment_item"
+    android:padding="14dp"
+    android:layout_marginBottom="10dp"
     android:id="@+id/item_comentario">
 
-    <ImageView
-        android:id="@+id/comment_user_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:scaleType="centerCrop"
-        android:background="@drawable/bg_badge_orange"
-        android:contentDescription="User avatar"
-        android:layout_marginEnd="12dp" />
+    <!-- Avatar del usuario -->
+    <FrameLayout
+        android:layout_width="68dp"
+        android:layout_height="68dp"
+        android:layout_marginEnd="12dp"
+        >
 
+        <ImageView
+            android:id="@+id/comment_user_image"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_user"
+            android:contentDescription="User avatar"
+            android:background="@drawable/bg_avatar_circle"
+            android:padding="2dp" />
+    </FrameLayout>
+
+    <!-- Contenido del comentario -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
 
+        <!-- Nombre y fecha -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="6dp">
+            android:layout_marginBottom="8dp">
 
             <TextView
                 android:id="@+id/comment_user_name"
@@ -37,32 +49,36 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Nombre Usuario"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
-                android:textColor="#212121" />
+                android:textColor="@color/unirutas_text_dark" />
 
             <TextView
                 android:id="@+id/comment_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Fecha"
-                android:textSize="12sp"
-                android:textColor="#757575" />
-
+                android:text="Hace 2 días"
+                android:textSize="11sp"
+                android:textColor="@color/unirutas_text_dark"
+                android:alpha="0.6" />
         </LinearLayout>
 
+        <!-- Rating -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="8dp">
+            android:background="@drawable/bg_rating_badge"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:layout_marginBottom="10dp">
 
             <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:src="@drawable/ic_star"
-                app:tint="#FFC107"
+                app:tint="@color/unirutas_secondary"
                 android:layout_marginEnd="4dp" />
 
             <TextView
@@ -70,21 +86,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="5.0"
-                android:textSize="14sp"
-                android:textColor="#212121"
+                android:textSize="13sp"
+                android:textColor="@color/unirutas_text_dark"
                 android:textStyle="bold" />
-
         </LinearLayout>
 
+        <!-- Texto del comentario -->
         <TextView
             android:id="@+id/comment_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Texto del comentario"
+            android:text="Excelente servicio, muy puntual y amable. El microbus estaba limpio y cómodo."
             android:textSize="14sp"
-            android:textColor="#424242"
-            android:lineSpacingExtra="4dp" />
-
+            android:textColor="@color/unirutas_text_dark"
+            android:alpha="0.85"
+            android:lineSpacingExtra="3dp" />
     </LinearLayout>
-
 </LinearLayout>
