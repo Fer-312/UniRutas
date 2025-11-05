@@ -25,12 +25,17 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
         authRepository = new AuthRepository(this);
 
         // Si ya está logueado, ir directamente a MainActivity
-        if (authRepository.isLoggedIn()) {
+        if (authRepository.isEstudianteLoggedIn()) {
             startActivity(new Intent(this, MainActivity.class));
+            finish();
+            return;
+        }
+        //Aqui entra motorista
+        else if (authRepository.isMotoristaLoggedIn()) {
+            //startActivity(new Intent(this, MainActivity.class));
             finish();
             return;
         }

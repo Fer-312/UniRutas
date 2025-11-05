@@ -11,6 +11,7 @@
     <color name="unirutas_primary">#002B5B</color>         <!-- Azul oscuro (inicio degradado) -->
     <color name="unirutas_secondary">#008080</color>       <!-- Verde azulado (fin degradado) -->
     <color name="unirutas_accent">#BFD7EA</color>
+    <color name="unirutas_degradadoAccent">#3C849B</color>
 
 
 

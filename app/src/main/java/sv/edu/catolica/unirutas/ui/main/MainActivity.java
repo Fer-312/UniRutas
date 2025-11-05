@@ -14,10 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.bumptech.glide.Glide;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,7 +26,6 @@ import sv.edu.catolica.unirutas.data.model.Estudiante;
 import sv.edu.catolica.unirutas.data.model.Favorito;
 import sv.edu.catolica.unirutas.data.model.Horario;
 import sv.edu.catolica.unirutas.data.model.Inscripcion;
-import sv.edu.catolica.unirutas.data.model.Motorista;
 import sv.edu.catolica.unirutas.data.model.PuntoRuta;
 import sv.edu.catolica.unirutas.data.model.Ruta;
 import sv.edu.catolica.unirutas.data.model.Usuario;
@@ -79,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         authRepository = new AuthRepository(this);
-        if (!authRepository.isLoggedIn()) {
+        if (!authRepository.isEstudianteLoggedIn()) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
             return;

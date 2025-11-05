@@ -3,6 +3,6 @@
     <gradient
         android:angle="135"
         android:endColor="@color/unirutas_accent"
-        android:startColor="#3C849B" />
+        android:startColor="@color/unirutas_degradadoAccent" />
     <corners android:radius="10dp" />
 </shape>
