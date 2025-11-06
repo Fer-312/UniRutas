@@ -9,15 +9,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.bumptech.glide.Glide;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,7 +27,6 @@ import sv.edu.catolica.unirutas.data.model.Estudiante;
 import sv.edu.catolica.unirutas.data.model.Favorito;
 import sv.edu.catolica.unirutas.data.model.Horario;
 import sv.edu.catolica.unirutas.data.model.Inscripcion;
-import sv.edu.catolica.unirutas.data.model.Motorista;
 import sv.edu.catolica.unirutas.data.model.PuntoRuta;
 import sv.edu.catolica.unirutas.data.model.Ruta;
 import sv.edu.catolica.unirutas.data.model.Usuario;
@@ -79,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         authRepository = new AuthRepository(this);
-        if (!authRepository.isLoggedIn()) {
+        if (!authRepository.isEstudianteLoggedIn()) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
             return;
@@ -93,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
         //========================inicia aqui ========================
-        repository.getMotoristaByIdUsuario(authRepository.getCurrentUser().getIdUsuario(), new RutaRepository.RepositoryCallback<List<Motorista>>() {
+        /*repository.getMotoristaByIdUsuario(authRepository.getCurrentUser().getIdUsuario(), new RutaRepository.RepositoryCallback<List<Motorista>>() {
             @Override
             public void onSuccess(List<Motorista> data) {
                 for (Motorista motorista:data){
@@ -108,11 +105,12 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        */
         initComponentes();
         CargarDestinos();
 
 
-
+/*
         repository.getEstudianteByIdUsuario(authRepository.getCurrentUser().getIdUsuario(), new RutaRepository.RepositoryCallback<List<Estudiante>>() {
             @Override
             public void onSuccess(List<Estudiante> data) {
@@ -128,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this,error,Toast.LENGTH_LONG).show();
 
             }
-        });
+        });*/
 
         Infoperfil();
         initTabhost();
@@ -137,6 +135,8 @@ public class MainActivity extends AppCompatActivity {
     private void initComponentes(){
         repository = new RutaRepository();
         tvGastado = findViewById(R.id.tvGastado);
+        Dashboard_AgregarRutasFavoritas();
+
         tvRutasto = findViewById(R.id.tvTotalRutas);
         containerRutasInscritas = findViewById(R.id.containerRutasInscritas);
         containerRutasFavoritas = findViewById(R.id.containerRutasFavoritas);
@@ -301,8 +301,10 @@ public class MainActivity extends AppCompatActivity {
                         TextView tvRutaDestino = itemView.findViewById(R.id.tvRutaDestino);
                         TextView tvHorario = itemView.findViewById(R.id.tvHorario);
                         TextView tvEstado = itemView.findViewById(R.id.tvEstado);
+                        RelativeLayout containerHorariosI = itemView.findViewById(R.id.containerHorariosI);
 
                         tvEstado.setVisibility(View.GONE);
+                        containerHorariosI.setVisibility(View.GONE);
                         tvRutaOrigen.setText("Rutas de hora clase ");
                         tvHorario.setVisibility(View.GONE);
 
@@ -385,7 +387,7 @@ public class MainActivity extends AppCompatActivity {
                                 tvEstado.setBackgroundResource(R.drawable.bg_badge_green);
                                 containerRutasInscritas.addView(itemView);
                             } else if ("Partió".equals(inscripcion.getRuta().getEstado().getNombre())) {
-                                tvEstado.setBackgroundResource(R.drawable.bg_badge_orange);
+                                tvEstado.setBackgroundResource(R.drawable.bg_badge_warning);
                                 containerRutasInscritas.addView(itemView);
                             }else{
                                 tvEstado.setBackgroundResource(R.drawable.bg_badge_red);
@@ -504,7 +506,7 @@ public class MainActivity extends AppCompatActivity {
                                             if ("Disponible".equals(ruta2.getEstado().getNombre())) {
                                                 tvEstado.setBackgroundResource(R.drawable.bg_badge_green);
                                             } else if ("Partió".equals(ruta2.getEstado().getNombre())) {
-                                                tvEstado.setBackgroundResource(R.drawable.bg_badge_orange);
+                                                tvEstado.setBackgroundResource(R.drawable.bg_badge_warning);
                                             }else{
                                                 tvEstado.setBackgroundResource(R.drawable.bg_badge_red);
                                             }
@@ -584,7 +586,7 @@ public class MainActivity extends AppCompatActivity {
                                             if ("Disponible".equals(ruta2.getEstado().getNombre())) {
                                                 tvEstado.setBackgroundResource(R.drawable.bg_badge_green);
                                             } else if ("Partió".equals(ruta2.getEstado().getNombre())) {
-                                                tvEstado.setBackgroundResource(R.drawable.bg_badge_orange);
+                                                tvEstado.setBackgroundResource(R.drawable.bg_badge_warning);
                                             }else{
                                                 tvEstado.setBackgroundResource(R.drawable.bg_badge_red);
                                             }
@@ -642,6 +644,7 @@ public class MainActivity extends AppCompatActivity {
                 TextView tv = new TextView(itemView2.getContext());
                 tv.setText(puntoRuta1.getNombre());
                 tv.setTextSize(14);
+                tv.setTextColor(getResources().getColor(R.color.unirutas_text_dark));
 
                 // Añadir al contenedor
                 containerDestinos.setVisibility(View.VISIBLE);

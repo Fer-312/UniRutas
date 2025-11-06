@@ -3,6 +3,7 @@ package sv.edu.catolica.unirutas.ui.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,6 +37,7 @@ public class detail_detalles_ruta extends AppCompatActivity {
     private TextView tvRutaDestino;
     private TextView tvPlaca, tvRutalabel;
     private ImageButton btnregresar;
+    private Button btnInscribirse;
     private LinearLayout containerDestinos, LlInscrito;
     private RutaRepository repository;
     private AuthRepository auth;
@@ -78,6 +80,8 @@ public class detail_detalles_ruta extends AppCompatActivity {
         btnregresar = findViewById(R.id.btnregresar);
         tvRutalabel = findViewById(R.id.tvRutalabel);
         containerDestinos = findViewById(R.id.containerDestinos);
+        btnInscribirse = findViewById(R.id.btnInscribirse);
+        btnInscribirse.setEnabled(true);
         btnregresar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,9 +115,9 @@ public class detail_detalles_ruta extends AppCompatActivity {
     private void asignardetalles(){
         tvDEstado.setText(rut.getEstado().getNombre());
         if ("Disponible".equals(rut.getEstado().getNombre())) {
-            tvDEstado.setBackgroundResource(R.drawable.bg_badge_disponible);
+            tvDEstado.setBackgroundResource(R.drawable.bg_badge_green);
         } else if ("Partió".equals(rut.getEstado().getNombre())) {
-            tvDEstado.setBackgroundResource(R.drawable.bg_badge_orange);
+            tvDEstado.setBackgroundResource(R.drawable.bg_badge_warning);
         }else{
             tvDEstado.setBackgroundResource(R.drawable.bg_badge_red);
         }
@@ -157,6 +161,7 @@ public class detail_detalles_ruta extends AppCompatActivity {
                 TextView tv = new TextView(this);
                 tv.setText(puntoruta.getNombre());
                 tv.setTextSize(13);
+                tv.setTextColor(getResources().getColor(R.color.unirutas_text_dark));
 
                 // Añadir al contenedor
                 containerDestinos.setVisibility(View.VISIBLE);
@@ -166,6 +171,8 @@ public class detail_detalles_ruta extends AppCompatActivity {
         }
         if(inscrito){
             LlInscrito.setVisibility(View.VISIBLE);
+            btnInscribirse.setEnabled(false);
+            btnInscribirse.setVisibility(View.GONE);
         }
 
     }

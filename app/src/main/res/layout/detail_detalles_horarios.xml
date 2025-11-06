@@ -6,67 +6,92 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_margin="16dp"
+    android:background="@color/unirutas_background_light"
     tools:context=".ui.main.detail_detalles_Horarios">
 
-    <!-- Header Section -->
+    <!-- Header Section (Ocupa tod el ancho) -->
     <include
         layout="@layout/reutilizable_encabezado_detail"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp" />
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
             android:id="@+id/sections_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <RelativeLayout
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="16dp">
+
+            <!-- Card: Horario Destacado -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:background="@drawable/bg_card_blue_gradient"
+                android:padding="20dp"
+                android:layout_marginBottom="24dp"
+                android:elevation="2dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_schedule"
+                    app:tint="@color/unirutas_primary"
+                    android:layout_marginEnd="12dp"
+                    android:contentDescription="Icono de reloj" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Horario: "
-                    android:textSize="22sp"
-                    android:textStyle="bold"
-                    android:textColor="#212121"/>
+                    android:text="Horario Seleccionado:"
+                    android:textSize="18sp"
+                    android:textStyle="normal"
+                    android:textColor="@color/unirutas_text_dark" />
+
                 <TextView
                     android:id="@+id/tvHorarioGeneral"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="8:00 "
-                    android:textSize="22sp"
+                    android:layout_weight="1"
+                    android:text="8:00 AM"
+                    android:textSize="24sp"
                     android:textStyle="bold"
-                    android:layout_marginEnd="20dp"
-                    android:layout_alignParentEnd="true"
+                    android:gravity="end"
+                    android:textColor="@color/unirutas_primary" />
+            </LinearLayout>
 
-                    android:textColor="#212121"/>
-            </RelativeLayout>
-
+            <!-- Sección: Rutas Entrantes (Header) -->
             <TextView
-                android:layout_marginTop="24dp"
-                android:layout_marginStart="5dp"
-                android:text="Rutas Entrantes"
-                android:textStyle="bold"
-                android:textColor="#000"
-                android:textSize="16sp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="Rutas Entrantes para este Horario"
+                android:textStyle="bold"
+                android:textColor="@color/unirutas_text_dark"
+                android:textSize="18sp"
+                android:layout_marginBottom="12dp" />
 
-            <!--Etiquetas de las rutas inscritas -->
-            <!-- Ruta1 1 -->
+            <!-- Mensaje de No Rutas -->
             <TextView
                 android:id="@+id/msjEntrantes"
-                android:layout_marginTop="24dp"
-                android:layout_marginStart="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="No hay rutas para este horario"
                 android:textSize="16sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textColor="@color/unirutas_text_dark"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
+            <!-- Contenedor para rutas entrantes dinámicas -->
             <LinearLayout
                 android:id="@+id/containerRutasInscritas2"
                 android:layout_width="match_parent"
@@ -74,12 +99,4 @@
                 android:orientation="vertical" />
         </LinearLayout>
     </ScrollView>
-
-
-
-
-
-
-
-
 </LinearLayout>

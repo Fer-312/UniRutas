@@ -3,6 +3,7 @@ package sv.edu.catolica.unirutas.ui.main.auth;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -25,15 +26,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
         authRepository = new AuthRepository(this);
 
-        // Si ya está logueado, ir directamente a MainActivity
-        if (authRepository.isLoggedIn()) {
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-            return;
-        }
+        revisarUsuario();
 
         initViews();
         setupClickListeners();
@@ -44,6 +39,19 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
         tvRegister = findViewById(R.id.tvRegister);
+    }
+    private void revisarUsuario(){
+        // Si ya está logueado, ir directamente a MainActivity
+        if (authRepository.isEstudianteLoggedIn()) {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+            return;
+        }
+        else if (authRepository.isMotoristaLoggedIn()) {
+            //startActivity(new Intent(this, MainActivity.class));
+            //finish();
+            //return;
+        }
     }
 
     private void setupClickListeners() {
@@ -66,10 +74,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(Usuario usuario) {
                 runOnUiThread(() -> {
                     System.out.println("DEBUG LoginActivity - LOGIN EXITOSO");
-                    Toast.makeText(LoginActivity.this,
-                            "Bienvenido " + usuario.getNombre(), Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    finish();
+                    Toast.makeText(LoginActivity.this, "Bienvenido " + usuario.getNombre(), Toast.LENGTH_SHORT).show();
                 });
             }
 
@@ -118,11 +123,5 @@ public class LoginActivity extends AppCompatActivity {
         });
     }*/
 
- //guuardar email usuario
-    private void guardarEmailUsuario(String email) {
-        getSharedPreferences("UsuarioPrefs", MODE_PRIVATE)
-                .edit()
-                .putString("user_email", email)
-                .apply();
-    }
+
 }

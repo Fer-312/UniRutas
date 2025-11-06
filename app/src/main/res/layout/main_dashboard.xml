@@ -5,25 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:background="@color/unirutas_background_light"
     android:id="@+id/tab1">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-
-        >
-
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <!-- Sección: Rutas Favoritas -->
-        <TextView
-            android:layout_marginTop="24dp"
-            android:layout_marginStart="5dp"
-            android:text="⭐ Rutas Favoritas (Horarios Clase)"
-            android:textStyle="bold"
-            android:textColor="#000"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="12dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_star"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:text="Rutas Favoritas (Horarios Clase)"
+                android:textStyle="bold"
+                android:textColor="@color/unirutas_text_dark"
+                android:textSize="17sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
         <!-- Contenedor para rutas favoritas dinámicas -->
         <LinearLayout
@@ -33,88 +45,192 @@
             android:orientation="vertical" />
 
         <!-- Sección: Rutas Inscritas -->
-        <TextView
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
             android:layout_marginTop="24dp"
-            android:layout_marginStart="5dp"
-            android:text="📅 Rutas Inscritas"
-            android:textStyle="bold"
-            android:textColor="#000"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_marginBottom="12dp">
 
-        <!--Etiquetas de las rutas inscritas -->
-        <!-- Ruta1 1 -->
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_calendar"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:text="Rutas Inscritas"
+                android:textStyle="bold"
+                android:textColor="@color/unirutas_text_dark"
+                android:textSize="17sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <!-- Container de Rutas Inscritas -->
         <LinearLayout
             android:id="@+id/containerRutasInscritas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
 
-        <!-- Resumen -->
-        <TextView
+        <!-- Sección: Resumen -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
             android:layout_marginTop="24dp"
-            android:text="Resumen"
-            android:textStyle="bold"
-            android:textColor="#000"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_height="wrap_content" />
+            android:layout_marginBottom="12dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_chart"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:text="Resumen"
+                android:textStyle="bold"
+                android:textColor="@color/unirutas_text_dark"
+                android:textSize="17sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/bg_card"
+            android:background="@drawable/bg_card_blue_gradient"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="20dp"
+            android:elevation="2dp">
+
+            <!-- Total de Rutas -->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
+                android:layout_height="wrap_content"
+                android:paddingVertical="8dp">
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Total de Rutas Inscritas del mes:"
-                    android:textColor="#555" />
+                    android:orientation="vertical"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@drawable/ic_bus"
+                            android:layout_marginEnd="6dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total de Rutas Inscritas"
+                            android:textColor="@color/unirutas_icon_dark"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Este mes"
+                        android:textColor="@color/unirutas_icon_dark"
+                        android:textSize="12sp"
+                        android:alpha="0.7"
+                        android:layout_marginStart="24dp" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tvTotalRutas"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
                     android:text="3"
-                    android:textColor="#000"
-                    android:textSize="18sp"
+                    android:textColor="@color/unirutas_primary"
+                    android:textSize="24sp"
                     android:textStyle="bold"
                     android:layout_alignParentEnd="true"
-                    />
-
+                    android:layout_centerVertical="true" />
             </RelativeLayout>
 
+            <!-- Separador -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/unirutas_card_blue_stroke"
+                android:layout_marginVertical="16dp" />
+
+            <!-- Total Gastado -->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="15dp">
+                android:layout_height="wrap_content"
+                android:paddingVertical="8dp">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Total gastado este mes:"
-                    android:textColor="#555" />
+                    android:orientation="vertical"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@drawable/ic_attach_money"
+                            android:layout_marginEnd="6dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total gastado"
+                            android:textColor="@color/unirutas_icon_dark"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Este mes"
+                        android:textColor="@color/unirutas_icon_dark"
+                        android:textSize="12sp"
+                        android:alpha="0.7"
+                        android:layout_marginStart="24dp" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tvGastado"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="$9.0"
-                    android:textColor="#000"
-                    android:textSize="18sp"
+                    android:textColor="@color/unirutas_secondary"
+                    android:textSize="24sp"
                     android:textStyle="bold"
-                    android:layout_alignParentEnd="true"/>
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true" />
             </RelativeLayout>
 
         </LinearLayout>
+
+        <!-- Espacio al final -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
+
     </LinearLayout>
 
 </ScrollView>

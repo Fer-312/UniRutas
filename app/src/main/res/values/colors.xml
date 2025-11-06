@@ -4,13 +4,12 @@
     <color name="white">#FFFFFF</color>
     <color name="GrisOpaco">#F8F8F8</color>
     <color name="Rojo">#F20F0F</color>
-    <color name="Verde">#25E70B</color>
-    <color name="bus_body">#2196F3</color>
 
 
     <color name="unirutas_primary">#002B5B</color>         <!-- Azul oscuro (inicio degradado) -->
     <color name="unirutas_secondary">#008080</color>       <!-- Verde azulado (fin degradado) -->
     <color name="unirutas_accent">#BFD7EA</color>
+    <color name="unirutas_degradadoAccent">#3C849B</color>
 
 
 
@@ -24,7 +23,44 @@
     <color name="unirutas_background_light">#F5F7FA</color>     <!-- Fondo claro -->
     <color name="unirutas_text_dark">#1A1A1A</color>            <!-- Texto principal en modo claro -->
     <color name="unirutas_icon_dark">#002B5B</color>
+    <color name="orgage_opaco">#FFF8F0</color>
 
 
+    <!-- ====================== -->
+    <!-- Aqui estan los colores de hardcode -->
+    <!-- ====================== -->
+
+
+    <!-- Avatar y badges -->
+    <color name="unirutas_avatar_gradient_start">#E3F2FD</color>
+    <color name="unirutas_avatar_gradient_end">#BBDEFB</color>
+    <color name="unirutas_badge_red">#E53935</color>
+
+    <!-- Cards y contenedores -->
+    <color name="unirutas_card_stroke">#E8ECF0</color>
+    <color name="unirutas_card_blue_light_start">#F8FBFF</color>
+    <color name="unirutas_card_blue_light_end">#F0F5FA</color>
+    <color name="unirutas_card_blue_stroke">#E0E8F0</color>
+    <color name="unirutas_info_background">#FAFBFC</color>
+
+    <!-- Placeholders y fondos -->
+    <color name="unirutas_image_placeholder">#E0E0E0</color>
+    <color name="unirutas_placa_background">#F0F4F8</color>
+    <color name="unirutas_search_background">#F5F5F5</color>
+    <color name="unirutas_section_header">#F9F9F9</color>
+
+    <!-- Route container -->
+    <color name="unirutas_route_gradient_start">#E8F4F8</color>
+    <color name="unirutas_route_gradient_end">#F0F9FF</color>
+
+    <!-- Botones estado pressed -->
+    <color name="unirutas_btn_primary_pressed_start">#001F42</color>
+    <color name="unirutas_btn_primary_pressed_end">#006666</color>
+    <color name="unirutas_btn_secondary_pressed">#E8F4F8</color>
+
+    <!-- Overlays y transparencias -->
+    <color name="unirutas_overlay_transparent">#00000000</color>
+    <color name="unirutas_overlay_dark">#60000000</color>
+    <color name="unirutas_text_hint">#646262</color>
 
 </resources>

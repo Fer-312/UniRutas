@@ -3,21 +3,22 @@ package sv.edu.catolica.unirutas.data.repository;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import sv.edu.catolica.unirutas.data.model.Estudiante;
-import sv.edu.catolica.unirutas.data.model.Inscripcion;
 import sv.edu.catolica.unirutas.data.remote.SupabaseApi;
 import sv.edu.catolica.unirutas.data.remote.SupabaseClient;
 import sv.edu.catolica.unirutas.data.model.Usuario;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import sv.edu.catolica.unirutas.ui.main.auth.LoginActivity;
+import sv.edu.catolica.unirutas.ui.main.MainActivity;
 
 import java.util.List;
 
 public class AuthRepository {
     private SupabaseApi api;
+    private RutaRepository repository;
     private SharedPreferences prefs;
     private static final String PREFS_NAME = "UsuarioPrefs";
     private static final String KEY_USER_ID = "user_id";
@@ -27,12 +28,15 @@ public class AuthRepository {
     private static final String KEY_USER_PHONE = "user_phone";
     private static final String KEY_USER_FOTO = "foto_perfil";
     private static final String KEY_MOTORISTA_ID = "motorista_id";
+    private Context contexto;
 
-    public int estudiantexdId=0;
+
 
     public AuthRepository(Context context) {
+        repository = new RutaRepository();
         this.api = SupabaseClient.getInstance();
         this.prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        this.contexto = context;
     }
 
     public interface AuthCallback {
@@ -47,21 +51,14 @@ public class AuthRepository {
         // Usar consulta con filtro correcto
         String emailFilter = "eq." + email;
 
-
-
         api.getUsuarioByEmailFilter(emailFilter).enqueue(new Callback<List<Usuario>>() {
             @Override
             public void onResponse(Call<List<Usuario>> call, Response<List<Usuario>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<Usuario> usuarios = response.body();
-
-
                     if (!usuarios.isEmpty()) {
                         Usuario usuario = usuarios.get(0);
-
-
                         // Verificar contraseña localmente
-
                         if (usuario.getContrasena() != null && usuario.getContrasena().equals(password)) {
                             saveUserData(usuario);
                             callback.onSuccess(usuario);
@@ -149,13 +146,19 @@ public class AuthRepository {
 
 
     // VERIFICAR SI ESTÁ LOGUEADO
-    public boolean isLoggedIn() {
-        return prefs.getString(KEY_USER_EMAIL, null) != null;
+    public boolean isEstudianteLoggedIn() {
+        return prefs.getString(KEY_USER_EMAIL, null) != null
+                && prefs.getInt(KEY_ESTUDENT_ID, 0) != 0;
+    }
+
+    public boolean isMotoristaLoggedIn() {
+        return prefs.getString(KEY_USER_EMAIL, null) != null
+                && prefs.getInt(KEY_MOTORISTA_ID, 0) != 0;
     }
 
     // OBTENER USUARIO ACTUAL
     public Usuario getCurrentUser() {
-        if (!isLoggedIn()) return null;
+        if (!isEstudianteLoggedIn()) return null;
 
         Usuario usuario = new Usuario();
         usuario.setIdUsuario(prefs.getInt(KEY_USER_ID, 0));
@@ -167,21 +170,22 @@ public class AuthRepository {
         return usuario;
     }
     public int getCurrentEstudianteID() {
-        if (!isLoggedIn()) return 0;
-        estudiantexdId = prefs.getInt(KEY_ESTUDENT_ID, 0);
+        if (!isEstudianteLoggedIn()) return 0;
         return prefs.getInt(KEY_ESTUDENT_ID, 0);
+    }
+    public int getCurrentMotoristaID() {
+        if (!isMotoristaLoggedIn()) return 0;
+        return prefs.getInt(KEY_MOTORISTA_ID, 0);
     }
 
     // GUARDAR DATOS DEL USUARIO
     public void saveUserData( int estudianteId) {
-        estudiantexdId=estudianteId;
         prefs.edit()
                 .putInt(KEY_ESTUDENT_ID, estudianteId)
                 .apply();
     }
     // GUARDAR DATOS DEL USUARIO
     public void saveUserDataMotorista( int motoristaId) {
-        estudiantexdId=motoristaId;
         prefs.edit()
                 .putInt(KEY_MOTORISTA_ID, motoristaId)
                 .apply();
@@ -194,5 +198,26 @@ public class AuthRepository {
                 .putString(KEY_USER_NAME, usuario.getNombre())
                 .putString(KEY_USER_FOTO, usuario.getFotoPerfil())
                 .apply();
+        caragarIdEstudiante(usuario.getIdUsuario());
+
+    }
+    private  void caragarIdEstudiante(int idUsuario){
+        repository.getEstudianteByIdUsuario(idUsuario, new RutaRepository.RepositoryCallback<List<Estudiante>>() {
+            @Override
+            public void onSuccess(List<Estudiante> data) {
+                for (Estudiante estudiante:data) {
+                    saveUserData(estudiante.getIdEstudiante());
+                    contexto.startActivity(new Intent(contexto, MainActivity.class));
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+            }
+        });
+    }
+
+    private  void caragarIdMotorista(int idUsuario){
+        //aqui estara el buscar el motorista y cargar vista motorista
     }
 }

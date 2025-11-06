@@ -45,6 +45,7 @@ public class detail_detalles_motorista extends AppCompatActivity {
     private RatingBar ratingBar;
     private TextView tvValorRating;
     private boolean inscrito;
+    private ImageView profile_image;
 
     private EditText etComentario;
     private List<Comentario> coments;
@@ -74,6 +75,7 @@ public class detail_detalles_motorista extends AppCompatActivity {
         }
 
         tvMotoristaName = findViewById(R.id.tvMotoristaName);
+        profile_image = findViewById(R.id.profile_image);
         tvRate = findViewById(R.id.tvRate);
         tvDiasService = findViewById(R.id.tvDiasService);
         tvTelefono = findViewById(R.id.tvTelefono);
@@ -101,6 +103,7 @@ public class detail_detalles_motorista extends AppCompatActivity {
 
     private void asignardetalles(){
         tvMotoristaName.setText(motorista.getUsuario().getNombre());
+        FileUtils.MostrarImagen(detail_detalles_motorista.this, profile_image, motorista.getUsuario().getFotoPerfil());
         tvRate.setText(motorista.getCalificacionPromedio().toString());
         repository.getComentariosPorMotorista(motorista.getIdMotorista(), new RutaRepository.RepositoryCallback<List<Comentario>>() {
             @Override
@@ -175,9 +178,9 @@ public class detail_detalles_motorista extends AppCompatActivity {
     }
 
     public void Comentar(View view) {
-        if(ComentarButton.getText().toString().equals("Enviar")){
+        if(ComentarButton.getText().toString().equals("Enviar comentario")){
             if(ratingBar.getRating()==0){
-
+                Toast.makeText(detail_detalles_motorista.this, "Ingresa al menos 0.5 estrellas", Toast.LENGTH_SHORT).show();
             }else{
                 Comentario comentario = new Comentario();
                 comentario.setPuntuacion(BigDecimal.valueOf(Double.parseDouble(tvValorRating.getText().toString())));

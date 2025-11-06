@@ -6,179 +6,225 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_margin="16dp"
+    android:background="@color/unirutas_background_light"
     tools:context=".ui.main.detail_detalles_motorista">
 
     <!-- Header Section -->
-    <include
-        layout="@layout/reutilizable_encabezado_detail"
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="12dp"
-        android:background="@drawable/bg_card"
-        android:layout_marginBottom="12dp">
-
-        <!-- Profile Image -->
-        <ImageView
-            android:id="@+id/profile_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/bg_badge_orange"
-            android:scaleType="centerCrop"
-            android:background="@drawable/badge_circlebackgraund"
-            android:contentDescription="Profile Image"
-            android:layout_marginEnd="12dp"/>
-
-        <!-- Profile Info -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tvMotoristaName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Carlos Johnson"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:textColor="#212121"/>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="6dp">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_star"
-                    app:tint="#FFC107"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="4dp"/>
-
-                <TextView
-                    android:id="@+id/tvRate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="4.8"
-                    android:textSize="16sp"
-                    android:textColor="#212121"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Calificación"
-                    android:textSize="14sp"
-                    android:textColor="#757575"
-                    android:layout_marginStart="6dp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="6dp">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_calendar"
-                    app:tint="#2196F3"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="4dp"/>
-
-                <TextView
-                    android:id="@+id/tvDiasService"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="45"
-                    android:textSize="16sp"
-                    android:textColor="#212121"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Rutas hechas"
-                    android:textSize="14sp"
-                    android:textColor="#757575"
-                    android:layout_marginStart="6dp"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </LinearLayout>
+    <include layout="@layout/reutilizable_encabezado_detail" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <!-- Seccion de comentarios -->
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Profile Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:background="@drawable/bg_card"
+                android:layout_marginBottom="16dp">
+
+                <!-- Profile Image con borde circular -->
+                <FrameLayout
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/bg_avatar_circle">
+
+                    <ImageView
+                        android:id="@+id/profile_image"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/ic_user"
+                        android:layout_gravity="center"
+                        android:contentDescription="Profile Image" />
+                </FrameLayout>
+
+                <!-- Profile Info -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tvMotoristaName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Carlos Johnson"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/unirutas_text_dark" />
+
+                    <!-- Rating Row -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_card_orange_dashed"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="6dp">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@drawable/ic_star"
+                            app:tint="@color/unirutas_secondary"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="4dp" />
+
+                        <TextView
+                            android:id="@+id/tvRate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="4.8"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/unirutas_text_dark"
+                            android:layout_marginEnd="4dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Calificación"
+                            android:textSize="13sp"
+                            android:textColor="@color/unirutas_text_dark"
+                            android:alpha="0.7" />
+                    </LinearLayout>
+
+                    <!-- Service Days Row -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp"
+
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_marginStart="8dp"
+                            android:src="@drawable/ic_calendar"
+                            app:tint="@color/unirutas_secondary"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="6dp" />
+
+                        <TextView
+                            android:id="@+id/tvDiasService"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="45"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/unirutas_text_dark"
+                            android:layout_marginEnd="4dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Rutas hechas"
+                            android:textSize="13sp"
+                            android:textColor="@color/unirutas_text_dark"
+                            android:alpha="0.7" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Comentarios Section -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="12dp"
+                android:padding="16dp"
                 android:background="@drawable/bg_card"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="16dp">
 
+                <!-- Header de comentarios -->
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    >
-                    <TextView
-                        android:id="@+id/ComentariosRecientes"
+                    android:layout_marginBottom="16dp">
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginBottom="12dp"
-                        android:text="Comentarios Recientes"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="#212121"/>
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_alignParentStart="true">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_chat"
+                            app:tint="@color/unirutas_primary"
+                            android:layout_marginEnd="8dp" />
+
+                        <TextView
+                            android:id="@+id/ComentariosRecientes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Comentarios Recientes"
+                            android:textSize="17sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/unirutas_text_dark" />
+                    </LinearLayout>
 
                     <Button
                         android:id="@+id/btnVerMas"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="36dp"
                         android:onClick="CargarMás"
                         android:visibility="gone"
                         android:layout_alignParentEnd="true"
                         android:text="Ver más"
-                        />
-
+                        android:textSize="13sp"
+                        android:textColor="@color/unirutas_primary"
+                        android:background="@drawable/btn_secondary"
+                        android:paddingHorizontal="12dp"
+                        app:backgroundTint="@null"
+                        android:textAllCaps="false" />
                 </RelativeLayout>
 
-
-                <ScrollView
+                <!-- Contenedor de comentarios -->
+                <LinearLayout
+                    android:id="@+id/containerComentarios"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:dividerPadding="8dp">
+                </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/containerComentarios"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal"
-                        android:dividerPadding="8dp">
-                    </LinearLayout>
-                </ScrollView>
+                <!-- Formulario para añadir comentario -->
                 <LinearLayout
                     android:id="@+id/linearañadircomentarioInscrito"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/bg_card_blue_gradient"
+                    android:padding="16dp"
                     android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Deja tu comentario"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/unirutas_text_dark"
+                        android:layout_marginBottom="12dp" />
+
                     <EditText
                         android:id="@+id/etComentario"
                         android:layout_width="match_parent"
@@ -186,137 +232,168 @@
                         android:hint="¡Ingresa tu comentario!"
                         android:gravity="top|start"
                         android:padding="12dp"
-                        android:background="@android:drawable/edit_text"
+                        android:background="@drawable/bg_edit_text"
                         android:inputType="textMultiLine"
-                        android:layout_marginTop="5dp"
                         android:maxLines="5"
+                        android:textColor="@color/unirutas_text_dark"
+                        android:textColorHint="#999999"
                         android:scrollbars="vertical" />
 
-                    <!-- RatingBar con pasos de 0.5 -->
-                    <RatingBar
-                        android:id="@+id/ratingBar"
-                        android:layout_width="wrap_content"
+                    <!-- Rating Section -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:numStars="5"
-                        android:stepSize="0.5"
-                        android:rating="0"
-                        android:layout_marginTop="20dp"
-                        android:layout_gravity="center_horizontal" />
-                    <!-- Valor numérico de la calificación -->
-                    <TextView
-                        android:id="@+id/tvValorRating"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0.0 / 5"
-                        android:textSize="16sp"
-                        android:layout_marginBottom="20dp"
-                        android:layout_gravity="center_horizontal"
-                        android:textColor="#555" />
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/bg_card_orange_dashed"
+                        android:padding="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tu calificación"
+                            android:textSize="13sp"
+                            android:textColor="@color/unirutas_text_dark"
+                            android:alpha="0.7"
+                            android:layout_marginBottom="8dp" />
+
+                        <RatingBar
+                            android:id="@+id/ratingBar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:numStars="5"
+                            android:stepSize="0.5"
+                            android:rating="0"
+                            android:progressTint="@color/unirutas_primary"
+                            android:secondaryProgressTint="@color/unirutas_primary"
+                            android:progressBackgroundTint="#E0E0E0" />
+
+                        <TextView
+                            android:id="@+id/tvValorRating"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0.0"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/unirutas_text_dark"
+                            android:layout_marginTop="8dp" />
+                    </LinearLayout>
 
                     <Button
                         android:id="@+id/ComentarButton"
                         android:onClick="Comentar"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Enviar"
-                        />
+                        android:layout_height="50dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Enviar comentario"
+                        android:textColor="@color/unirutas_white"
+                        app:backgroundTint="@null"
+                        android:textStyle="bold"
+                        android:textAllCaps="false"
+                        android:background="@drawable/btn_primary" />
                 </LinearLayout>
-
-
-
-
-
             </LinearLayout>
 
-            <!-- seccion de contacto -->
+            <!-- Información de contacto -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="12dp"
+                android:padding="16dp"
                 android:background="@drawable/bg_card"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="16dp">
 
-                <TextView
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Información de contacto"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="#212121"
-                    android:layout_marginBottom="8dp"/>
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="16dp">
 
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_contact"
+                        app:tint="@color/unirutas_primary"
+                        android:layout_marginEnd="8dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Información de contacto"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/unirutas_text_dark" />
+                </LinearLayout>
+
+                <!-- Teléfono -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="8dp">
+                    android:background="@drawable/bg_info_container"
+                    android:padding="12dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical">
 
                     <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:src="@drawable/ic_phone"
-                        app:tint="#2196F3"
+                        app:tint="@color/unirutas_secondary"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="10dp"/>
+                        android:layout_marginEnd="12dp" />
 
                     <TextView
                         android:id="@+id/tvTelefono"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="(503)"
-                        android:textSize="16sp"
-                        android:textColor="#212121"/>
-
+                        android:text="(503) 7777-7777"
+                        android:textSize="15sp"
+                        android:textColor="@color/unirutas_text_dark" />
                 </LinearLayout>
 
+                <!-- Email -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:background="@drawable/bg_info_container"
+                    android:padding="12dp"
+                    android:gravity="center_vertical">
 
                     <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:src="@drawable/ic_email"
-                        app:tint="#2196F3"
+                        app:tint="@color/unirutas_secondary"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="10dp"/>
+                        android:layout_marginEnd="12dp" />
 
                     <TextView
                         android:id="@+id/tvEmail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="luan.2z@universidad.edu"
-                        android:textSize="16sp"
-                        android:textColor="#2196F3"
-                        android:autoLink="email"/>
-
+                        android:text="motorista@universidad.edu"
+                        android:textSize="15sp"
+                        android:textColor="@color/unirutas_secondary"
+                        android:autoLink="email" />
                 </LinearLayout>
-
             </LinearLayout>
 
             <!-- Button de ver rutas -->
             <Button
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="56dp"
                 android:text="Ver rutas activas este día"
                 android:textSize="16sp"
-                android:textColor="#FFFFFF"
-                android:padding="14dp"
-                android:layout_margin="10dp"
+                android:textColor="@color/unirutas_white"
                 android:textStyle="bold"
-                android:layout_marginBottom="12dp"/>
-
+                android:textAllCaps="false"
+                android:background="@drawable/btn_primary"
+                app:backgroundTint="@null"
+                android:layout_marginBottom="16dp" />
         </LinearLayout>
-
     </ScrollView>
-
-
-
-
-
-
-
-
 </LinearLayout>
