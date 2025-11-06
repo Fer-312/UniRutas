@@ -3,60 +3,90 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_card"
+    android:background="@drawable/bg_card_white"
     android:padding="16dp"
     android:orientation="vertical"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
-    android:layout_marginTop="8dp">
+    android:layout_marginTop="8dp"
+    android:elevation="2dp">
 
+    <!-- Encabezado de la ruta -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tvRutaOrigen"
-            android:text="Ruta San Salvador "
-            android:textSize="15sp"
-            android:textColor="#000"
-            android:textStyle="bold"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_alignParentStart="true">
 
-        <TextView
-            android:id="@+id/tvFlecha"
-            android:text=" ➡ "
-            android:textSize="15sp"
-            android:textColor="#000"
-            android:textStyle="bold"
-            android:layout_toEndOf="@id/tvRutaOrigen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_location"
+                android:layout_marginEnd="6dp" />
 
-        <TextView
-            android:id="@+id/tvRutaDestino"
-            android:text=" UNICAES"
-            android:textSize="15sp"
-            android:textColor="#000"
-            android:textStyle="bold"
-            android:layout_toEndOf="@id/tvFlecha"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tvRutaOrigen"
+                android:text="Ruta San Salvador "
+                android:textSize="16sp"
+                android:textColor="@color/unirutas_text_dark"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tvFlecha"
+                android:text=" ➡ "
+                android:textSize="16sp"
+                android:textColor="@color/unirutas_secondary"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tvRutaDestino"
+                android:text=" UNICAES"
+                android:textSize="16sp"
+                android:textColor="@color/unirutas_text_dark"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </RelativeLayout>
 
+    <!-- Horario y Estado -->
     <RelativeLayout
-        android:id="@+id/container"
+        android:id="@+id/containerHorariosI"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp">
+        android:layout_marginTop="8dp">
 
-        <TextView
-            android:id="@+id/tvHorario"
-            android:text="Hoy · 6:45 AM"
-            android:textColor="#555"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_alignParentStart="true">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_timer"
+                android:layout_marginEnd="4dp" />
+
+            <TextView
+                android:id="@+id/tvHorario"
+                android:text="Hoy · 6:45 AM"
+                android:textColor="@color/unirutas_icon_dark"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvEstado"
@@ -64,24 +94,35 @@
             android:paddingHorizontal="12dp"
             android:paddingVertical="4dp"
             android:textSize="12sp"
+            android:textColor="@color/unirutas_white"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
-    <!--para motorista -->
+    <!-- Información del Motorista -->
     <LinearLayout
         android:id="@+id/motorista_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_info_container"
+        android:padding="10dp"
+        android:gravity="center_vertical"
         android:visibility="gone">
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_user"
+            android:layout_marginEnd="6dp" />
 
         <TextView
             android:id="@+id/tvMotoristaLabel"
             android:text="Motorista: "
-            android:textColor="#555"
+            android:textColor="@color/unirutas_icon_dark"
             android:textSize="13sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -90,30 +131,42 @@
             android:id="@+id/tvMotoristaName"
             android:text=""
             android:textStyle="bold"
-            android:textColor="#000"
+            android:textColor="@color/unirutas_text_dark"
             android:textSize="13sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-
     </LinearLayout>
+
+    <!-- Container de Destinos -->
     <LinearLayout
         android:id="@+id/containerDestinos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginTop="8dp"
         android:visibility="gone">
-        <TextView
-            android:id="@+id/tvRutalabel"
-            android:text="Destinos: "
-            android:textColor="#000"
-            android:textStyle="bold"
-            android:textSize="13sp"
-            android:layout_marginTop="5dp"
+
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_destination"
+                android:layout_marginEnd="6dp" />
 
+            <TextView
+                android:id="@+id/tvRutalabel"
+                android:text="Destinos: "
+                android:textColor="@color/unirutas_text_dark"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

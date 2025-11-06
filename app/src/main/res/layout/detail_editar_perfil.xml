@@ -1,92 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:padding="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:fitsSystemWindows="false"
+    android:background="@color/unirutas_white"
     tools:context=".ui.main.detail_editar_perfil">
+
+
+
+    <!-- Encabezado de detalle (Incluye el botón de regreso y título) -->
     <include
         layout="@layout/reutilizable_encabezado_detail"
         />
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
-            android:gravity="center">
+            android:padding="24dp"
+            android:gravity="center_horizontal">
 
+            <!-- Sección de Imagen de Perfil -->
+            <ImageView
+                android:id="@+id/imageViewPreview"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:layout_marginBottom="24dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_user"
+                android:background="@drawable/bg_avatar_circle"
+                android:contentDescription="Vista previa de la imagen de perfil" />
+
+            <!-- Campo de Nombre -->
+            <!-- Usando un TextView como etiqueta y un EditText con estilo personalizado (bg_edit_text) -->
             <TextView
-                android:layout_width="320dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:layout_marginBottom="10dp"
-                android:text="Nombre"
+                android:layout_marginTop="16dp"
+                android:textSize="14sp"
+                android:textColor="#333333"
+                android:textStyle="bold"
+                android:text="Nombre(s)"
                 />
             <EditText
                 android:id="@+id/etNombre"
-                android:layout_width="320dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nombre"/>
-            <TextView
-                android:layout_width="320dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:textSize="18sp"
-                android:text="Telefono"
-                />
-            <EditText
-                android:id="@+id/etTelefono"
-                android:layout_width="320dp"
-                android:layout_height="wrap_content"
-                android:hint="0000-0000"
+                android:minHeight="48dp"
+                android:hint="Ej: Juan"
+                android:inputType="textPersonName"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_edit_text"
                 />
 
+            <!-- Campo de Apellido -->
             <TextView
-                android:layout_width="320dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:textSize="18sp"
-                android:text="Apellido"
+                android:textSize="14sp"
+                android:textColor="#333333"
+                android:textStyle="bold"
+                android:text="Apellido(s)"
                 />
             <EditText
                 android:id="@+id/etApellido"
-                android:layout_width="320dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Apellido"
-                android:layout_marginBottom="5dp"
+                android:minHeight="48dp"
+                android:hint="Ej: Pérez"
+                android:inputType="textPersonName"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_edit_text"
+                />
+            <!-- Campo de Apellido -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="#333333"
+                android:textStyle="bold"
+                android:text="Apellido(s)"
+                />
+            <EditText
+                android:id="@+id/etTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:hint="Ej: Pérez"
+                android:inputType="textPersonName"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/bg_edit_text"
                 />
 
-
-            <ImageView
-                android:id="@+id/imageViewPreview"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
-                android:layout_marginBottom="20dp"
-                android:scaleType="centerCrop"
-
-                android:background="@drawable/badge_circlebackgraund"
-                android:contentDescription="Vista previa" />
-
+            <!-- Botones de Acción -->
             <Button
                 android:id="@+id/btnSelectImage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Seleccionar imagen" />
-
+                android:text="Seleccionar nueva imagen"
+                android:background="@drawable/btn_secondary"
+                android:textColor="@color/unirutas_primary"
+                app:backgroundTint="@null"
+                android:layout_marginBottom="12dp"
+                android:textAllCaps="false" />
 
             <Button
                 android:id="@+id/btnUploadImage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Guardar Cambios"
+                app:backgroundTint="@null"
+                android:background="@drawable/btn_primary"
+                android:textColor="@android:color/white"
                 android:layout_marginTop="12dp"
-                android:text="Guardar" />
+                android:textAllCaps="false" />
         </LinearLayout>
     </ScrollView>
-
 
 
 </LinearLayout>

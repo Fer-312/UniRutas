@@ -105,7 +105,7 @@ public class Ver_HistorialRuta_usuario extends AppCompatActivity {
                                     tvEstado.setBackgroundResource(R.drawable.bg_badge_green);
                                     containerRutasInscritas.addView(itemView);
                                 } else if ("Partió".equals(inscripcion.getRuta().getEstado().getNombre())) {
-                                    tvEstado.setBackgroundResource(R.drawable.bg_badge_orange);
+                                    tvEstado.setBackgroundResource(R.drawable.bg_badge_warning);
                                     containerRutasInscritas.addView(itemView);
                                 }else{
                                     tvEstado.setBackgroundResource(R.drawable.bg_badge_red);

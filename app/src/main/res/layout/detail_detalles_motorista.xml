@@ -45,8 +45,6 @@
                         android:layout_height="100dp"
                         android:src="@drawable/ic_user"
                         android:layout_gravity="center"
-
-                        app:tint="@color/unirutas_primary"
                         android:contentDescription="Profile Image" />
                 </FrameLayout>
 
@@ -73,7 +71,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_marginTop="8dp"
-                        android:background="@drawable/bg_rating_container"
+                        android:background="@drawable/bg_card_orange_dashed"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="6dp">
 
@@ -192,7 +190,7 @@
                         android:text="Ver más"
                         android:textSize="13sp"
                         android:textColor="@color/unirutas_primary"
-                        android:background="@drawable/bg_button_secondary"
+                        android:background="@drawable/btn_secondary"
                         android:paddingHorizontal="12dp"
                         app:backgroundTint="@null"
                         android:textAllCaps="false" />
@@ -214,7 +212,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginTop="16dp"
-                    android:background="@drawable/bg_comment_form"
+                    android:background="@drawable/bg_card_blue_gradient"
                     android:padding="16dp"
                     android:visibility="gone">
 
@@ -248,7 +246,7 @@
                         android:orientation="vertical"
                         android:gravity="center"
                         android:layout_marginTop="16dp"
-                        android:background="@drawable/bg_rating_container"
+                        android:background="@drawable/bg_card_orange_dashed"
                         android:padding="12dp">
 
                         <TextView
@@ -275,7 +273,7 @@
                             android:id="@+id/tvValorRating"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0.0 / 5"
+                            android:text="0.0"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/unirutas_text_dark"
@@ -293,7 +291,7 @@
                         app:backgroundTint="@null"
                         android:textStyle="bold"
                         android:textAllCaps="false"
-                        android:background="@drawable/bg_button_primary" />
+                        android:background="@drawable/btn_primary" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -334,7 +332,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="@drawable/bg_contact_item"
+                    android:background="@drawable/bg_info_container"
                     android:padding="12dp"
                     android:layout_marginBottom="10dp"
                     android:gravity="center_vertical">
@@ -361,7 +359,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="@drawable/bg_contact_item"
+                    android:background="@drawable/bg_info_container"
                     android:padding="12dp"
                     android:gravity="center_vertical">
 
@@ -393,7 +391,7 @@
                 android:textColor="@color/unirutas_white"
                 android:textStyle="bold"
                 android:textAllCaps="false"
-                android:background="@drawable/bg_button_primary"
+                android:background="@drawable/btn_primary"
                 app:backgroundTint="@null"
                 android:layout_marginBottom="16dp" />
         </LinearLayout>

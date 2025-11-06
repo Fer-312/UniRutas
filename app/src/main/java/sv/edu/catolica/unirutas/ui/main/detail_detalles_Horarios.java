@@ -161,7 +161,7 @@ public class detail_detalles_Horarios extends AppCompatActivity {
                                             if ("Disponible".equals(ruta2.getEstado().getNombre())) {
                                                 tvEstado.setBackgroundResource(R.drawable.bg_badge_green);
                                             } else if ("Partió".equals(ruta2.getEstado().getNombre())) {
-                                                tvEstado.setBackgroundResource(R.drawable.bg_badge_orange);
+                                                tvEstado.setBackgroundResource(R.drawable.bg_badge_warning);
                                             }else{
                                                 tvEstado.setBackgroundResource(R.drawable.bg_badge_red);
                                             }

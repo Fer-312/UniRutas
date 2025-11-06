@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -109,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         CargarDestinos();
 
 
-
+/*
         repository.getEstudianteByIdUsuario(authRepository.getCurrentUser().getIdUsuario(), new RutaRepository.RepositoryCallback<List<Estudiante>>() {
             @Override
             public void onSuccess(List<Estudiante> data) {
@@ -125,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this,error,Toast.LENGTH_LONG).show();
 
             }
-        });
+        });*/
 
         Infoperfil();
         initTabhost();
@@ -134,6 +135,8 @@ public class MainActivity extends AppCompatActivity {
     private void initComponentes(){
         repository = new RutaRepository();
         tvGastado = findViewById(R.id.tvGastado);
+        Dashboard_AgregarRutasFavoritas();
+
         tvRutasto = findViewById(R.id.tvTotalRutas);
         containerRutasInscritas = findViewById(R.id.containerRutasInscritas);
         containerRutasFavoritas = findViewById(R.id.containerRutasFavoritas);
@@ -298,8 +301,10 @@ public class MainActivity extends AppCompatActivity {
                         TextView tvRutaDestino = itemView.findViewById(R.id.tvRutaDestino);
                         TextView tvHorario = itemView.findViewById(R.id.tvHorario);
                         TextView tvEstado = itemView.findViewById(R.id.tvEstado);
+                        RelativeLayout containerHorariosI = itemView.findViewById(R.id.containerHorariosI);
 
                         tvEstado.setVisibility(View.GONE);
+                        containerHorariosI.setVisibility(View.GONE);
                         tvRutaOrigen.setText("Rutas de hora clase ");
                         tvHorario.setVisibility(View.GONE);
 
@@ -382,7 +387,7 @@ public class MainActivity extends AppCompatActivity {
                                 tvEstado.setBackgroundResource(R.drawable.bg_badge_green);
                                 containerRutasInscritas.addView(itemView);
                             } else if ("Partió".equals(inscripcion.getRuta().getEstado().getNombre())) {
-                                tvEstado.setBackgroundResource(R.drawable.bg_badge_orange);
+                                tvEstado.setBackgroundResource(R.drawable.bg_badge_warning);
                                 containerRutasInscritas.addView(itemView);
                             }else{
                                 tvEstado.setBackgroundResource(R.drawable.bg_badge_red);
@@ -501,7 +506,7 @@ public class MainActivity extends AppCompatActivity {
                                             if ("Disponible".equals(ruta2.getEstado().getNombre())) {
                                                 tvEstado.setBackgroundResource(R.drawable.bg_badge_green);
                                             } else if ("Partió".equals(ruta2.getEstado().getNombre())) {
-                                                tvEstado.setBackgroundResource(R.drawable.bg_badge_orange);
+                                                tvEstado.setBackgroundResource(R.drawable.bg_badge_warning);
                                             }else{
                                                 tvEstado.setBackgroundResource(R.drawable.bg_badge_red);
                                             }
@@ -581,7 +586,7 @@ public class MainActivity extends AppCompatActivity {
                                             if ("Disponible".equals(ruta2.getEstado().getNombre())) {
                                                 tvEstado.setBackgroundResource(R.drawable.bg_badge_green);
                                             } else if ("Partió".equals(ruta2.getEstado().getNombre())) {
-                                                tvEstado.setBackgroundResource(R.drawable.bg_badge_orange);
+                                                tvEstado.setBackgroundResource(R.drawable.bg_badge_warning);
                                             }else{
                                                 tvEstado.setBackgroundResource(R.drawable.bg_badge_red);
                                             }
@@ -639,6 +644,7 @@ public class MainActivity extends AppCompatActivity {
                 TextView tv = new TextView(itemView2.getContext());
                 tv.setText(puntoRuta1.getNombre());
                 tv.setTextSize(14);
+                tv.setTextColor(getResources().getColor(R.color.unirutas_text_dark));
 
                 // Añadir al contenedor
                 containerDestinos.setVisibility(View.VISIBLE);

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@drawable/bg_comment_item"
+    android:background="@drawable/bg_info_container"
     android:padding="14dp"
     android:layout_marginBottom="10dp"
     android:id="@+id/item_comentario">
@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:background="@drawable/bg_rating_badge"
+            android:background="@drawable/bg_card_orange"
             android:paddingHorizontal="8dp"
             android:paddingVertical="4dp"
             android:layout_marginBottom="10dp">

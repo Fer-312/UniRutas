@@ -7,8 +7,14 @@
     tools:context=".ui.main.detail_detalles_ruta"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:background="@color/unirutas_white"
     android:layout_height="match_parent"
     android:fillViewport="true">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:background="@color/unirutas_white"
+        android:fitsSystemWindows="true" />
     <include layout="@layout/reutilizable_encabezado_detail"/>
     <ScrollView
         android:layout_width="match_parent"
@@ -164,7 +170,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:background="@drawable/bg_badge_inscrito"
+                    android:background="@drawable/bg_badge_warning"
                     android:padding="14dp"
                     android:gravity="center"
                     android:orientation="horizontal"
@@ -225,7 +231,7 @@
                             android:id="@+id/tvDEstado"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_badge_disponible"
+                            android:background="@drawable/bg_badge_green"
                             android:paddingHorizontal="14dp"
                             android:paddingVertical="6dp"
                             android:text="Disponible"
@@ -367,7 +373,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginTop="16dp"
-                    android:background="@drawable/bg_destinations"
+                    android:background="@drawable/bg_card_orange_dashed"
                     android:padding="16dp"
                     android:visibility="gone">
 
@@ -402,7 +408,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginTop="16dp"
-                    android:background="@drawable/bg_driver_info"
+                    android:background="@drawable/bg_card_blue_gradient"
                     android:padding="16dp">
 
                     <LinearLayout
@@ -530,6 +536,7 @@
                     android:layout_height="wrap_content">
 
                     <Button
+                        android:id="@+id/btnInscribirse"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
                         android:text="Inscribirse"
@@ -538,7 +545,7 @@
                         android:textStyle="bold"
                         android:textAllCaps="false"
                         android:letterSpacing="0.02"
-                        android:background="@drawable/bg_button_primary"
+                        android:background="@drawable/btn_primary"
                         android:elevation="4dp"
                         app:backgroundTint="@null"
                         android:stateListAnimator="@null" />
@@ -555,7 +562,7 @@
                         android:layout_height="56dp"
                         android:text="Ver Mapa"
                         android:textColor="@color/unirutas_primary"
-                        android:background="@drawable/bg_button_secondary"
+                        android:background="@drawable/btn_secondary"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textAllCaps="false"
